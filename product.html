@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details | Jagannath Enterprises</title>
+  <meta name="description" content="View product details, specifications, reviews and availability at Jagannath Enterprises." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <!-- NAV -->
+  <nav id="navbar" class="scrolled">
+    <a href="/" class="brand">
+      <span class="brand-icon">⬛</span>
+      Jagannath <em>Enterprises</em>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/#products" class="nav-link">Products</a></li>
+      <li><a href="/#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="cart-trigger" id="cart-trigger" aria-label="Shopping Cart">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span id="cart-count" class="cart-badge">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- PRODUCT DETAIL -->
+  <main style="padding-top:6rem; min-height:100vh;">
+    <div class="container">
+      <div id="product-loading" style="text-align:center; padding:6rem 2rem;">
+        <div style="font-size:3rem; margin-bottom:1rem; animation: pulse 1.5s ease infinite;">⏳</div>
+        <p style="color:var(--text-muted);">Loading product details...</p>
+      </div>
+      <div id="product-content" style="display:none;"></div>
+      <div id="product-error" style="display:none; text-align:center; padding:6rem 2rem;">
+        <div style="font-size:3rem; margin-bottom:1rem;">😕</div>
+        <h2 style="font-family:var(--font-display); letter-spacing:2px; margin-bottom:0.5rem;">Product Not Found</h2>
+        <p style="color:var(--text-muted); margin-bottom:2rem;">The product you're looking for doesn't exist or has been removed.</p>
+        <a href="/#products" class="btn btn-gold">← Browse Products</a>
+      </div>
+    </div>
+
+    <!-- RECOMMENDED -->
+    <section style="padding:4rem 0;" id="recommended-section" class="section">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:2rem;">
+          <div class="section-label">You May Also Like</div>
+          <h2 class="section-title" style="font-size:2.5rem;">Recommended Products</h2>
+        </div>
+        <div class="products-grid" id="recommended-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="padding-top:0; border:none;">
+        <p>&copy; 2026 Jagannath Enterprises. All rights reserved.</p>
+        <p>Designed for Industrial Excellence 🏭</p>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .pd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; padding: 2rem 0 4rem; }
+    .pd-image-wrap {
+      background: var(--dark-3); border: 1px solid var(--border-subtle);
+      border-radius: 8px; overflow: hidden; position: relative;
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    }
+    .pd-image { max-width: 90%; max-height: 90%; object-fit: contain; }
+    .pd-badge-wrap { position: absolute; top: 1rem; left: 1rem; display: flex; gap: 0.5rem; }
+    .pd-badge {
+      background: var(--gold); color: #000; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; padding: 0.3rem 0.7rem;
+      border-radius: 4px; font-family: var(--font-head);
+    }
+    .pd-badge-discount { background: #ef4444; color: #fff; }
+    .pd-badge-oos { background: #ef4444; color: #fff; }
+
+    .pd-info { padding: 1rem 0; }
+    .pd-category {
+      font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 700; font-family: var(--font-head);
+      margin-bottom: 0.5rem;
+    }
+    .pd-name { font-family: var(--font-display); font-size: 3rem; letter-spacing: 2px; line-height: 1.05; margin-bottom: 1rem; }
+    .pd-rating { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .pd-rating-stars { font-size: 1.1rem; }
+    .pd-rating-text { color: var(--text-muted); font-size: 0.85rem; }
+
+    .pd-price-row { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem; }
+    .pd-price { font-family: var(--font-display); font-size: 2.8rem; letter-spacing: 1px; color: var(--gold-light); }
+    .pd-original-price { font-size: 1.2rem; color: var(--text-dim); text-decoration: line-through; }
+    .pd-discount-tag { background: rgba(239,68,68,0.15); color: #ef4444; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.78rem; font-weight: 700; }
+
+    .pd-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-subtle); }
+
+    .pd-stock { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 2rem; font-size: 0.85rem; font-weight: 600; }
+    .pd-stock-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .pd-stock-in { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.5); }
+    .pd-stock-low { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.5); }
+    .pd-stock-out { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.5); }
+
+    .pd-actions { display: flex; gap: 1rem; margin-bottom: 2.5rem; }
+    .pd-actions .btn { padding: 1rem 2rem; font-size: 0.85rem; }
+    .pd-qty-wrap {
+      display: flex; align-items: center; border: 1px solid var(--border-subtle);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .pd-qty-btn {
+      width: 44px; height: 44px; background: var(--dark-3); border: none;
+      color: var(--text); font-size: 1.2rem; cursor: pointer; transition: var(--transition);
+    }
+    .pd-qty-btn:hover { background: var(--gold); color: #000; }
+    .pd-qty-num {
+      width: 50px; text-align: center; font-size: 1rem; font-weight: 700;
+      background: var(--dark-4); color: white; border: none; height: 44px;
+    }
+
+    /* Specs */
+    .pd-specs { margin-bottom: 2.5rem; }
+    .pd-specs-title {
+      font-family: var(--font-head); font-size: 0.75rem; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; font-weight: 700;
+    }
+    .pd-spec-row {
+      display: flex; justify-content: space-between; padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-subtle); font-size: 0.88rem;
+    }
+    .pd-spec-key { color: var(--text-muted); }
+    .pd-spec-val { color: var(--text); font-weight: 600; }
+
+    /* Reviews Section */
+    .reviews-section { margin-top: 4rem; padding-top: 4rem; border-top: 1px solid var(--border-subtle); }
+    .review-card {
+      background: var(--dark-3); border: 1px solid var(--border-subtle);
+      border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;
+    }
+    .review-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.75rem; }
+    .review-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8rem; color: #000;
+    }
+    .review-name { font-weight: 700; font-size: 0.9rem; }
+    .review-date { font-size: 0.75rem; color: var(--text-dim); }
+    .review-comment { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; }
+
+    /* Notify form */
+    .notify-form {
+      display: flex; gap: 0.5rem; margin-top: 1rem;
+    }
+    .notify-form input {
+      flex: 1; padding: 0.75rem 1rem; background: var(--dark-3);
+      border: 1px solid var(--border-subtle); color: var(--text);
+      border-radius: var(--radius); font-size: 0.88rem; outline: none;
+    }
+    .notify-form input:focus { border-color: var(--gold); }
+
+    @media(max-width:900px) {
+      .pd-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .pd-name { font-size: 2.2rem; }
+      .pd-price { font-size: 2rem; }
+    }
+  </style>
+
+  <script type="module" src="/src/product.js"></script>
+</body>
+</html>
