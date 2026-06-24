@@ -127,7 +127,7 @@ productSchema.index({ name: 'text', description: 'text', category: 'text', tags:
 productSchema.index({ category: 1, price: 1 });
 productSchema.index({ rating: -1 });
 productSchema.index({ views: -1 });
-productSchema.index({ sku: 1 });
+
 productSchema.index({ isFeatured: 1 });
 
 const Product = mongoose.model('Product', productSchema);
