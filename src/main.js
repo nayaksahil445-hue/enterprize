@@ -231,6 +231,11 @@ async function addToCart(id) {
         body: JSON.stringify({ productId: id, qty: 1 })
       });
       showToast(`${product.name} added to cart!`, 'success');
+      // Sync local cart for UI
+      const existing = cart.find(i => i._id === id);
+      if (existing) existing.qty += 1;
+      else cart.push({ ...product, qty: 1 });
+      saveCart();
     } catch (err) {
       if (err.message?.includes('out of stock')) {
         showToast('Product is out of stock', 'error');
@@ -252,6 +257,7 @@ async function addToCart(id) {
 
   renderCart();
   updateCartBadge();
+  toggleCart(true);
 
   const btn = document.querySelector(`.add-cart-btn[data-id="${id}"]`);
   if (btn) {
@@ -423,6 +429,27 @@ document.getElementById('contact-form')?.addEventListener('submit', async (e) =>
     setTimeout(() => { msgEl.textContent = ''; msgEl.className = 'form-msg'; }, 6000);
   }
 });
+
+/* ===============================================================
+   CART SIDEBAR TOGGLE
+   ================================================================ */
+const cartTrigger = document.getElementById('cart-trigger');
+const closeCartBtn = document.getElementById('close-cart');
+const cartSidebar = document.getElementById('cart-sidebar');
+const cartOverlay = document.getElementById('cart-overlay');
+
+function toggleCart(show) {
+  if (cartSidebar) cartSidebar.classList.toggle('active', show);
+  if (cartOverlay) cartOverlay.classList.toggle('active', show);
+  if (show) renderCart();
+}
+
+if (cartTrigger) cartTrigger.addEventListener('click', () => toggleCart(true));
+if (closeCartBtn) closeCartBtn.addEventListener('click', () => toggleCart(false));
+if (cartOverlay) cartOverlay.addEventListener('click', () => toggleCart(false));
+
+const checkoutBtn = document.getElementById('checkout-btn');
+if (checkoutBtn) checkoutBtn.addEventListener('click', () => window.location.href = '/checkout.html');
 
 /* ===============================================================
    SCROLL TO TOP

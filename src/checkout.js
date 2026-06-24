@@ -19,6 +19,20 @@ let discount = 0;
 // ─── Load Cart ───
 async function loadCart() {
   try {
+    // Sync local cart to server
+    const localCart = JSON.parse(localStorage.getItem('je_cart') || '[]');
+    if (localCart.length > 0) {
+      for (const item of localCart) {
+        try {
+          await apiRequest('/cart/add', {
+            method: 'POST',
+            body: JSON.stringify({ productId: item._id, qty: item.qty || 1 })
+          });
+        } catch (e) { /* ignore */ }
+      }
+      localStorage.removeItem('je_cart');
+    }
+
     cartData = await apiRequest('/cart');
     if (!cartData || !cartData.items || !cartData.items.length) {
       showToast('Your cart is empty', 'warning');
