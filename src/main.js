@@ -108,7 +108,7 @@ async function fetchProducts() {
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
     const res = await fetch(`${API_URL}/products`, {
       headers,
-      signal: AbortSignal.timeout(4000)
+      signal: AbortSignal.timeout(60000) // 60 seconds to allow Render free tier to wake up
     });
     if (!res.ok) throw new Error();
     const data = await res.json();
@@ -412,7 +412,7 @@ document.getElementById('contact-form')?.addEventListener('submit', async (e) =>
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
-      signal: AbortSignal.timeout(5000)
+      signal: AbortSignal.timeout(60000)
     });
     if (res.ok) {
       msgEl.textContent = '✓ Enquiry sent! We will contact you within 24 hours.';
