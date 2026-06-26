@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login & Register | Jagannath Enterprises</title>
+  <meta name="description" content="Sign in or create an account at Jagannath Enterprises — India's trusted industrial furniture partner." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --gold: #c9a227; --gold-light: #e4b84a; --gold-dark: #a67c1e;
+      --black: #050505; --dark: #0d0d0d; --dark-2: #141414; --dark-3: #1a1a1a; --dark-4: #222;
+      --border: rgba(201,162,39,0.15); --border-subtle: rgba(255,255,255,0.06);
+      --text: #e8e8e8; --text-muted: #888; --text-dim: #555;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-head: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--black);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    /* Animated BG */
+    .auth-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(201,162,39,0.07) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(201,162,39,0.04) 0%, transparent 50%),
+        repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,0.01) 60px, rgba(255,255,255,0.01) 61px),
+        repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.01) 60px, rgba(255,255,255,0.01) 61px);
+      background-color: #050505;
+    }
+    .auth-bg::before {
+      content: ''; position: absolute; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,162,39,0.08) 0%, transparent 70%);
+      border-radius: 50%; top: -200px; right: -200px;
+      animation: float 8s ease-in-out infinite;
+    }
+    .auth-bg::after {
+      content: ''; position: absolute; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(201,162,39,0.06) 0%, transparent 70%);
+      border-radius: 50%; bottom: -100px; left: -100px;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+    /* Back link */
+    .back-link {
+      position: fixed; top: 2rem; left: 2rem; z-index: 10;
+      color: var(--text-muted); font-size: 0.82rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.5rem;
+      text-decoration: none; transition: var(--transition);
+      font-family: var(--font-head);
+    }
+    .back-link:hover { color: var(--gold); }
+    /* Auth Card */
+    .auth-card {
+      position: relative; z-index: 1;
+      background: rgba(20,20,20,0.85);
+      backdrop-filter: blur(30px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: min(480px, 92vw);
+      padding: 3rem 2.5rem;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(201,162,39,0.05);
+      animation: cardSlideUp 0.5s ease;
+    }
+    @keyframes cardSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .auth-logo {
+      text-align: center; margin-bottom: 2rem;
+    }
+    .auth-logo .logo-text {
+      font-family: var(--font-head); font-weight: 800; font-size: 1.1rem; color: #fff;
+    }
+    .auth-logo .logo-text em { color: var(--gold); font-style: normal; }
+    .auth-logo .logo-icon {
+      width: 50px; height: 50px; margin: 0 auto 1rem;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+      border-radius: 14px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; box-shadow: 0 8px 24px rgba(201,162,39,0.3);
+    }
+    /* Tabs */
+    .auth-tabs {
+      display: flex; gap: 0; margin-bottom: 2rem;
+      background: var(--dark-3); border-radius: 10px; padding: 4px;
+    }
+    .auth-tab {
+      flex: 1; padding: 0.7rem; border: none; border-radius: 8px;
+      background: none; color: var(--text-muted); font-weight: 600;
+      font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: var(--transition);
+      font-family: var(--font-head);
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      color: #000; box-shadow: 0 4px 12px rgba(201,162,39,0.3);
+    }
+    .auth-tab:not(.active):hover { color: var(--gold); }
+    /* Forms */
+    .auth-form { display: none; }
+    .auth-form.active { display: flex; flex-direction: column; gap: 1.2rem; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-dim); font-family: var(--font-head);
+    }
+    .form-group input {
+      padding: 0.85rem 1rem; background: rgba(26,26,26,0.8);
+      border: 1.5px solid var(--border-subtle); color: var(--text);
+      border-radius: 10px; font-size: 0.9rem; font-family: var(--font-body);
+      transition: var(--transition); outline: none;
+    }
+    .form-group input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.1), 0 0 20px rgba(201,162,39,0.05);
+    }
+    .form-group input::placeholder { color: #444; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    /* Password strength */
+    .password-strength { height: 3px; border-radius: 3px; background: var(--dark-4); margin-top: 0.3rem; overflow: hidden; }
+    .password-strength .bar { height: 100%; transition: width 0.3s, background 0.3s; width: 0; }
+    /* Submit */
+    .auth-submit {
+      padding: 0.95rem; border: none; border-radius: 10px;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+      color: #000; font-family: var(--font-head); font-weight: 700;
+      font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: var(--transition);
+      box-shadow: 0 4px 16px rgba(201,162,39,0.3);
+      margin-top: 0.5rem;
+    }
+    .auth-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,162,39,0.4);
+    }
+    .auth-submit:disabled {
+      opacity: 0.6; cursor: not-allowed; transform: none;
+    }
+    .auth-msg {
+      text-align: center; font-size: 0.85rem; font-weight: 600;
+      padding: 0.5rem; border-radius: 8px; margin-top: 0.5rem;
+    }
+    .auth-msg.error { color: #ef4444; background: rgba(239,68,68,0.08); }
+    .auth-msg.success { color: #22c55e; background: rgba(34,197,94,0.08); }
+    .auth-divider {
+      text-align: center; color: var(--text-dim); font-size: 0.75rem;
+      margin: 0.5rem 0; position: relative;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: ''; position: absolute; top: 50%;
+      width: 35%; height: 1px; background: var(--border-subtle);
+    }
+    .auth-divider::before { left: 0; }
+    .auth-divider::after { right: 0; }
+    .demo-info {
+      background: rgba(201,162,39,0.05); border: 1px solid rgba(201,162,39,0.1);
+      border-radius: 10px; padding: 1rem; font-size: 0.78rem; color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .demo-info strong { color: var(--gold); }
+    @media(max-width:500px) {
+      .auth-card { padding: 2rem 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/auth-DMwety3n.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/utils-B-dAw4_9.js">
+</head>
+<body>
+
+<div class="auth-bg"></div>
+
+<a href="/" class="back-link">← Back to Store</a>
+
+<div class="auth-card">
+  <div class="auth-logo">
+    <div class="logo-icon">⬛</div>
+    <div class="logo-text">Jagannath <em>Enterprises</em></div>
+  </div>
+
+  <div class="auth-tabs">
+    <button class="auth-tab active" data-tab="login" id="tab-login">Login</button>
+    <button class="auth-tab" data-tab="register" id="tab-register">Register</button>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <form class="auth-form active" id="login-form">
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" name="email" placeholder="you@company.com" required id="login-email" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" name="password" placeholder="Enter your password" required id="login-password" />
+    </div>
+    <button type="submit" class="auth-submit" id="login-submit">Sign In →</button>
+    <div id="login-msg" class="auth-msg" style="display:none;"></div>
+    <div class="auth-divider">Demo Accounts</div>
+    <div class="demo-info">
+      <strong>Admin:</strong> admin@jagannath.com / admin123<br/>
+      <strong>User:</strong> demo@test.com / demo123
+    </div>
+  </form>
+
+  <!-- REGISTER FORM -->
+  <form class="auth-form" id="register-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="name" placeholder="Rajesh Kumar" required id="reg-name" />
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" name="phone" placeholder="+91 98100 XXXXX" id="reg-phone" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" name="email" placeholder="you@company.com" required id="reg-email" />
+    </div>
+    <div class="form-group">
+      <label>Password (min 6 characters)</label>
+      <input type="password" name="password" placeholder="Create a strong password" required minlength="6" id="reg-password" />
+      <div class="password-strength"><div class="bar" id="pw-bar"></div></div>
+    </div>
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" name="confirmPassword" placeholder="Confirm your password" required id="reg-confirm" />
+    </div>
+    <button type="submit" class="auth-submit" id="register-submit">Create Account →</button>
+    <div id="register-msg" class="auth-msg" style="display:none;"></div>
+  </form>
+</div>
+
+</body>
+</html>

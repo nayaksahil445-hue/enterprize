@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jagannath Enterprises | Industrial Furniture & Storage Solutions</title>
-  <meta name="description" content="Jagannath Enterprises — Premium industrial furniture manufacturer. Cupboards, Dressing Tables, Cabinets, Shelves and Chest of Drawers for modern enterprises." />
+  <meta name="description"
+    content="Jagannath Enterprises — Premium industrial furniture manufacturer. Cupboards, Dressing Tables, Cabinets, Shelves and Chest of Drawers for modern enterprises." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
 </head>
+
 <body>
   <!-- LOADER -->
   <div id="loader">
     <div class="loader-inner">
       <span class="loader-brand">JE</span>
-      <div class="loader-bar"><div class="loader-fill"></div></div>
+      <div class="loader-bar">
+        <div class="loader-fill"></div>
+      </div>
     </div>
   </div>
 
@@ -26,6 +33,12 @@
       Jagannath <em>Enterprises</em>
     </a>
     <ul class="nav-links" id="nav-links">
+      <li class="nav-back-item"><button class="nav-back-btn" id="nav-back-btn" aria-label="Close menu"><svg width="20"
+            height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg> Back</button></li>
       <li><a href="#home" class="nav-link">Home</a></li>
       <li><a href="#about" class="nav-link">About</a></li>
       <li><a href="#products" class="nav-link">Products</a></li>
@@ -34,7 +47,11 @@
     </ul>
     <div class="nav-right">
       <button class="cart-trigger" id="cart-trigger" aria-label="Shopping Cart">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+        </svg>
         <span id="cart-count" class="cart-badge">0</span>
       </button>
       <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -54,7 +71,8 @@
         <span class="gold-text">Enterprise</span><br>
         Strength.
       </h1>
-      <p class="hero-subtitle reveal">Industrial-grade furniture crafted for durability, precision engineered for the modern workplace. Cupboards, Cabinets, Dressing Tables and more.</p>
+      <p class="hero-subtitle reveal">Industrial-grade furniture crafted for durability, precision engineered for the
+        modern workplace. Cupboards, Cabinets, Dressing Tables and more.</p>
       <div class="hero-actions reveal">
         <a href="#products" class="btn btn-gold">Explore Collection</a>
         <a href="#contact" class="btn btn-outline">Get a Quote</a>
@@ -93,8 +111,10 @@
         <div class="about-text reveal">
           <div class="section-label">About Us</div>
           <h2 class="section-title">Forged in Steel,<br>Refined by Experience</h2>
-          <p>Jagannath Enterprises has been at the forefront of industrial furniture manufacturing since 1998. Our products are trusted by warehouses, offices, hospitals, and enterprises across the country.</p>
-          <p>Every piece we create undergoes rigorous quality checks to ensure it can withstand the demands of an industrial environment while maintaining a premium aesthetic.</p>
+          <p>Jagannath Enterprises has been at the forefront of industrial furniture manufacturing since 1998. Our
+            products are trusted by warehouses, offices, hospitals, and enterprises across the country.</p>
+          <p>Every piece we create undergoes rigorous quality checks to ensure it can withstand the demands of an
+            industrial environment while maintaining a premium aesthetic.</p>
           <a href="#contact" class="btn btn-gold" style="margin-top:2rem;">Partner with Us</a>
         </div>
         <div class="about-features reveal">
@@ -117,6 +137,63 @@
             <div class="feature-icon">⚙️</div>
             <h3>Custom Orders</h3>
             <p>Tailored dimensions and finishes to match your workspace requirements precisely.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO SECTION -->
+  <section id="industry-video" class="video-section section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Watch Our Story</div>
+        <h2 class="section-title">Inside the <span class="gold-text">Industry</span></h2>
+        <p class="section-sub">See how we craft industrial-grade furniture from raw steel to premium finished products —
+          built to last generations.</p>
+      </div>
+      <div class="video-wrapper reveal">
+        <div class="video-container" id="video-container">
+          <div class="video-placeholder" id="video-placeholder">
+            <div class="video-play-btn" id="video-play-btn">
+              <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+                <circle cx="40" cy="40" r="38" stroke="currentColor" stroke-width="2" opacity="0.4" />
+                <circle cx="40" cy="40" r="38" fill="rgba(201,162,39,0.15)" />
+                <polygon points="32,24 58,40 32,56" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="video-overlay-text">
+              <span class="video-tag">▶ Watch Video</span>
+              <h3>Our Manufacturing Process</h3>
+              <p>From raw steel to premium furniture — a journey of precision and craftsmanship.</p>
+            </div>
+          </div>
+          <video id="video-player" class="video-iframe" preload="none" controls style="display:none;">
+            <source src="/videos/factory-tour.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="video-features">
+          <div class="video-feature-card">
+            <div class="video-feature-icon">🏭</div>
+            <div>
+              <h4>State-of-the-Art Factory</h4>
+              <p>50,000 sq ft manufacturing unit equipped with modern machinery</p>
+            </div>
+          </div>
+          <div class="video-feature-card">
+            <div class="video-feature-icon">👷</div>
+            <div>
+              <h4>Skilled Craftsmen</h4>
+              <p>200+ trained professionals ensuring quality at every step</p>
+            </div>
+          </div>
+          <div class="video-feature-card">
+            <div class="video-feature-icon">✅</div>
+            <div>
+              <h4>Quality Certified</h4>
+              <p>ISO 9001:2015 certified manufacturing process</p>
+            </div>
           </div>
         </div>
       </div>
@@ -162,7 +239,11 @@
 
       <div class="search-filter-bar reveal">
         <div class="search-box">
-          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
           <input type="text" id="search-input" placeholder="Search products...">
         </div>
         <div class="filter-chips">
@@ -203,7 +284,8 @@
       <div class="testimonials-grid">
         <div class="testimonial-card reveal">
           <div class="stars">★★★★★</div>
-          <p>"Jagannath Enterprises delivered 200 steel cupboards for our warehouse on schedule. Exceptional quality and build."</p>
+          <p>"Jagannath Enterprises delivered 200 steel cupboards for our warehouse on schedule. Exceptional quality and
+            build."</p>
           <div class="testimonial-author">
             <div class="author-img">R</div>
             <div>
@@ -214,7 +296,8 @@
         </div>
         <div class="testimonial-card reveal">
           <div class="stars">★★★★★</div>
-          <p>"The custom dressing tables for our hotel chain are outstanding. Guests frequently compliment the premium craftsmanship."</p>
+          <p>"The custom dressing tables for our hotel chain are outstanding. Guests frequently compliment the premium
+            craftsmanship."</p>
           <div class="testimonial-author">
             <div class="author-img">P</div>
             <div>
@@ -225,7 +308,8 @@
         </div>
         <div class="testimonial-card reveal">
           <div class="stars">★★★★★</div>
-          <p>"Best industrial cabinet supplier we've worked with. The 5-year warranty gives us peace of mind on bulk orders."</p>
+          <p>"Best industrial cabinet supplier we've worked with. The 5-year warranty gives us peace of mind on bulk
+            orders."</p>
           <div class="testimonial-author">
             <div class="author-img">A</div>
             <div>
@@ -297,7 +381,8 @@
             </div>
             <div class="form-group">
               <label>Message</label>
-              <textarea name="message" rows="4" placeholder="Tell us about your requirements, quantity, timeline..." required></textarea>
+              <textarea name="message" rows="4" placeholder="Tell us about your requirements, quantity, timeline..."
+                required></textarea>
             </div>
             <button type="submit" class="btn btn-gold btn-full" id="submit-btn">Send Enquiry</button>
             <div id="form-msg" class="form-msg"></div>
@@ -378,4 +463,5 @@
 
   <script type="module" src="/src/main.js"></script>
 </body>
+
 </html>

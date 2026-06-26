@@ -53,6 +53,22 @@ navLinks?.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', () => navLinks.classList.remove('open'));
 });
 
+// Back button in mobile nav
+const navBackBtn = document.getElementById('nav-back-btn');
+navBackBtn?.addEventListener('click', () => navLinks.classList.remove('open'));
+
+// Video play button
+const videoPlayBtn = document.getElementById('video-play-btn');
+const videoPlaceholder = document.getElementById('video-placeholder');
+const videoPlayer = document.getElementById('video-player');
+videoPlaceholder?.addEventListener('click', () => {
+  if (videoPlayer) {
+    videoPlayer.style.display = 'block';
+    videoPlaceholder.style.display = 'none';
+    videoPlayer.play();
+  }
+});
+
 /* ===============================================================
    REVEAL ANIMATIONS
    ================================================================ */
