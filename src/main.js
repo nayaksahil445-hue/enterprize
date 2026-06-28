@@ -44,17 +44,6 @@ window.addEventListener('scroll', () => {
   updateScrollTop();
 });
 
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('nav-links');
-hamburger?.addEventListener('click', () => navLinks.classList.toggle('open'));
-navLinks?.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', () => navLinks.classList.remove('open'));
-});
-
-// Back button in mobile nav
-const navBackBtn = document.getElementById('nav-back-btn');
-navBackBtn?.addEventListener('click', () => navLinks.classList.remove('open'));
-
 // Video play button
 const videoPlayBtn = document.getElementById('video-play-btn');
 const videoPlaceholder = document.getElementById('video-placeholder');
@@ -177,9 +166,9 @@ function renderProducts(products) {
               ${p.originalPrice && p.originalPrice > p.price ? `<div style="font-size:0.75rem;color:var(--text-dim);text-decoration:line-through;">${formatPrice(p.originalPrice)}</div>` : ''}
             </div>
             ${inStock
-              ? `<button class="add-cart-btn" data-id="${p._id}">+ Cart</button>`
-              : `<span style="font-size:0.72rem;color:#ef4444;font-weight:600;">Notify Me</span>`
-            }
+        ? `<button class="add-cart-btn" data-id="${p._id}">+ Cart</button>`
+        : `<span style="font-size:0.72rem;color:#ef4444;font-weight:600;">Notify Me</span>`
+      }
           </div>
           ${isLow ? `<div style="font-size:0.7rem;color:#f59e0b;font-weight:600;margin-top:0.5rem;">⚠ Only ${p.stock} left!</div>` : ''}
         </div>
@@ -188,7 +177,7 @@ function renderProducts(products) {
   }).join('');
 
   initReveal();
-  
+
   // Cart buttons (stop propagation to prevent navigation)
   grid.querySelectorAll('.add-cart-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -363,7 +352,7 @@ document.getElementById('checkout-btn')?.addEventListener('click', () => {
    ================================================================ */
 async function loadRecommendations() {
   if (!isLoggedIn()) return;
-  
+
   const recSection = document.getElementById('recommendations-section');
   if (!recSection) return;
 
@@ -373,7 +362,7 @@ async function loadRecommendations() {
       headers: { Authorization: `Bearer ${token}` }
     });
     const products = await res.json();
-    
+
     if (!products || !products.length) {
       recSection.style.display = 'none';
       return;
@@ -385,9 +374,9 @@ async function loadRecommendations() {
       <article class="product-card reveal" onclick="window.location.href='/product.html?id=${p._id}'" style="cursor:pointer;">
         <div class="product-thumb-wrap">
           ${p.image
-            ? `<img src="${p.image}" alt="${p.name}" class="product-thumb" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        ? `<img src="${p.image}" alt="${p.name}" class="product-thumb" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                <div class="product-thumb-placeholder" style="display:none">🪑</div>`
-            : `<div class="product-thumb-placeholder">🪑</div>`}
+        : `<div class="product-thumb-placeholder">🪑</div>`}
           <div class="product-badge">${p.category}</div>
         </div>
         <div class="product-info">

@@ -256,6 +256,54 @@ export function updateNavbarAuth() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', logout);
   }
+
+  // Centralized Mobile Navigation Setup
+  const mobileHamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelector('.nav-links');
+  if (mobileHamburger && navLinks) {
+    let navOverlay = document.getElementById('nav-overlay');
+    if (!navOverlay) {
+      navOverlay = document.createElement('div');
+      navOverlay.id = 'nav-overlay';
+      navOverlay.className = 'nav-overlay';
+      document.body.appendChild(navOverlay);
+    }
+
+    const toggleMenu = (e) => {
+      e?.stopPropagation();
+      const isOpen = navLinks.classList.toggle('open');
+      mobileHamburger.classList.toggle('active');
+      navOverlay.classList.toggle('open');
+      const navbarEl = document.getElementById('navbar');
+      navbarEl?.classList.toggle('menu-open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+
+    const closeMenu = () => {
+      navLinks.classList.remove('open');
+      mobileHamburger.classList.remove('active');
+      navOverlay.classList.remove('open');
+      const navbarEl = document.getElementById('navbar');
+      navbarEl?.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    };
+
+    // Remove old listeners by replacing with cloned node
+    const newHamburger = mobileHamburger.cloneNode(true);
+    mobileHamburger.parentNode.replaceChild(newHamburger, mobileHamburger);
+
+    newHamburger.addEventListener('click', toggleMenu);
+    navOverlay.addEventListener('click', closeMenu);
+
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    const backBtn = navLinks.querySelector('.nav-back-btn') || document.getElementById('nav-back-btn');
+    if (backBtn) {
+      backBtn.addEventListener('click', closeMenu);
+    }
+  }
 }
 
 // ─── Debounce ───

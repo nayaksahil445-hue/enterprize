@@ -2,6 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // Admin panel sirf localhost par accessible hai
+    (function() {
+      var h = window.location.hostname;
+      if (h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
+        document.title = '404 - Not Found';
+        document.write('<html><body style="background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif"><h1>404 — Page Not Found</h1></body></html>');
+        window.history.replaceState(null, '', '/');
+        throw new Error('Access denied');
+      }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard | Jagannath Enterprises</title>
   <meta name="description" content="Manage products, orders, inventory and sales reports at Jagannath Enterprises." />
@@ -128,9 +140,9 @@
       .dash-stats { grid-template-columns: 1fr 1fr; }
     }
   </style>
-  <script type="module" crossorigin src="/assets/admin-CVXlVnbV.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/utils-B-dAw4_9.js">
-  <link rel="stylesheet" crossorigin href="/assets/style-BKm6Jnkl.css">
+  <script type="module" crossorigin src="/assets/admin-BmYQuNbw.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/utils-CR0nv3qr.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-B2CNbMwT.css">
 </head>
 <body>
 
