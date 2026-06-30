@@ -20,7 +20,7 @@ const STATIC_PRODUCTS = [
    ================================================================ */
 let allProducts = [];
 let filteredProducts = [];
-let cart = JSON.parse(localStorage.getItem('je_cart')) || [];
+let cart = [];
 let activeCategory = 'all';
 
 /* ===============================================================
@@ -216,10 +216,77 @@ document.querySelectorAll('.chip').forEach(chip => {
 /* ===============================================================
    CART (hybrid: localStorage for guests, server for logged-in)
    ================================================================ */
-function saveCart() { localStorage.setItem('je_cart', JSON.stringify(cart)); }
+function saveCart() {
+  if (isLoggedIn()) {
+    // Save to logged-in user cache
+    localStorage.setItem('je_cart_cache', JSON.stringify(cart));
+  } else {
+    // Save to guest cart
+    localStorage.setItem('je_cart', JSON.stringify(cart));
+  }
+}
 
 function getProductById(id) {
   return allProducts.find(p => p._id === id) || STATIC_PRODUCTS.find(p => p._id === id);
+}
+
+async function loadCartData() {
+  if (isLoggedIn()) {
+    // 1. Load from cache first for instant rendering
+    const cached = localStorage.getItem('je_cart_cache');
+    if (cached) {
+      cart = JSON.parse(cached);
+      renderCart();
+      updateCartBadge();
+    }
+
+    // 2. Sync guest cart if there are any guest items in localStorage
+    const localCart = JSON.parse(localStorage.getItem('je_cart') || '[]');
+    if (localCart.length > 0) {
+      for (const item of localCart) {
+        try {
+          await apiRequest('/cart/add', {
+            method: 'POST',
+            body: JSON.stringify({ productId: item._id, qty: item.qty || 1 })
+          });
+        } catch (e) {
+          console.error('Failed to sync guest item:', item._id, e);
+        }
+      }
+      // Clear guest cart once synced
+      localStorage.removeItem('je_cart');
+    }
+
+    // 3. Fetch latest cart state from the server (source of truth)
+    try {
+      const serverCart = await apiRequest('/cart');
+      if (serverCart && serverCart.items) {
+        // Map the server's [{ product: {...}, qty }] to the flat structure
+        cart = serverCart.items.map(item => ({
+          ...item.product,
+          qty: item.qty
+        }));
+        saveCart(); // Update logged-in cache
+      }
+    } catch (err) {
+      console.error('Failed to fetch server cart:', err);
+    }
+  } else {
+    // Guest cart: Load directly from localStorage
+    cart = JSON.parse(localStorage.getItem('je_cart')) || [];
+  }
+  
+  // Render and update badge
+  renderCart();
+  updateCartBadge();
+
+  // Check if we need to auto-open the cart drawer (redirected from product page)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('open-cart') === 'true') {
+    toggleCart(true);
+    // Clean up the URL query parameter without reloading
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
 }
 
 async function addToCart(id) {
@@ -229,16 +296,24 @@ async function addToCart(id) {
   if (isLoggedIn()) {
     // Server cart
     try {
-      await apiRequest('/cart/add', {
+      const res = await apiRequest('/cart/add', {
         method: 'POST',
         body: JSON.stringify({ productId: id, qty: 1 })
       });
-      showToast(`${product.name} added to cart!`, 'success');
-      // Sync local cart for UI
-      const existing = cart.find(i => i._id === id);
-      if (existing) existing.qty += 1;
-      else cart.push({ ...product, qty: 1 });
+      
+      // Update local cart state from server response
+      if (res && res.items) {
+        cart = res.items.map(item => ({
+          ...item.product,
+          qty: item.qty
+        }));
+      } else {
+        const existing = cart.find(i => i._id === id);
+        if (existing) existing.qty += 1;
+        else cart.push({ ...product, qty: 1 });
+      }
       saveCart();
+      showToast(`${product.name} added to cart!`, 'success');
     } catch (err) {
       if (err.message?.includes('out of stock')) {
         showToast('Product is out of stock', 'error');
@@ -248,7 +323,7 @@ async function addToCart(id) {
       return;
     }
   } else {
-    // Local cart
+    // Local guest cart
     const existing = cart.find(i => i._id === id);
     if (existing) {
       existing.qty += 1;
@@ -256,6 +331,7 @@ async function addToCart(id) {
       cart.push({ ...product, qty: 1 });
     }
     saveCart();
+    showToast(`${product.name} added to cart!`, 'success');
   }
 
   renderCart();
@@ -270,12 +346,52 @@ async function addToCart(id) {
   }
 }
 
-function updateQty(id, delta) {
+async function updateQty(id, delta) {
   const item = cart.find(i => i._id === id);
   if (!item) return;
-  item.qty = Math.max(0, item.qty + delta);
-  if (item.qty === 0) cart = cart.filter(i => i._id !== id);
-  saveCart();
+  
+  const newQty = Math.max(0, item.qty + delta);
+
+  if (isLoggedIn()) {
+    try {
+      let res;
+      if (newQty === 0) {
+        // Remove from server
+        res = await apiRequest(`/cart/remove/${id}`, { method: 'DELETE' });
+        showToast('Item removed from cart', 'info');
+      } else {
+        // Update on server
+        res = await apiRequest('/cart/update', {
+          method: 'PUT',
+          body: JSON.stringify({ productId: id, qty: newQty })
+        });
+      }
+      
+      if (res && res.items) {
+        cart = res.items.map(item => ({
+          ...item.product,
+          qty: item.qty
+        }));
+      } else {
+        if (newQty === 0) cart = cart.filter(i => i._id !== id);
+        else item.qty = newQty;
+      }
+      saveCart();
+    } catch (err) {
+      showToast(err.message || 'Failed to update quantity', 'error');
+      return;
+    }
+  } else {
+    // Local guest cart
+    if (newQty === 0) {
+      cart = cart.filter(i => i._id !== id);
+      showToast('Item removed from cart', 'info');
+    } else {
+      item.qty = newQty;
+    }
+    saveCart();
+  }
+
   renderCart();
   updateCartBadge();
 }
@@ -284,6 +400,9 @@ function renderCart() {
   const container = document.getElementById('cart-items');
   const totalEl = document.getElementById('cart-total');
   if (!container) return;
+
+  // Prevent duplicate rendering by clearing container first
+  container.innerHTML = '';
 
   if (!cart.length) {
     container.innerHTML = '<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p>Your cart is empty</p></div>';
@@ -478,6 +597,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
    ================================================================ */
 initReveal();
 fetchProducts();
-updateCartBadge();
+loadCartData();
 updateNavbarAuth();
 loadRecommendations();

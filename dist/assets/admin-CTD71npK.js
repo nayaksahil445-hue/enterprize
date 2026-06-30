@@ -1,4 +1,4 @@
-import{a as e,d as t,i as n,l as r,n as i,r as a,s as o}from"./utils-CR0nv3qr.js";/* empty css              */o()||(t(`Access Denied. Admins only.`,`error`),setTimeout(()=>window.location.href=`/`,1500));var s={},c=[],l=[],u=[],d=[];document.querySelectorAll(`.admin-nav-item`).forEach(e=>{e.addEventListener(`click`,()=>{let t=e.dataset.pane;t&&(document.querySelectorAll(`.admin-nav-item`).forEach(e=>e.classList.remove(`active`)),document.querySelectorAll(`.admin-pane`).forEach(e=>e.classList.remove(`active`)),e.classList.add(`active`),document.getElementById(`pane-${t}`).classList.add(`active`),f(t))})});async function f(e){p(!0);try{switch(e){case`dashboard`:await m();break;case`orders`:await h();break;case`inventory`:await g();break;case`customers`:await y();break;case`enquiries`:await b();break}}catch(e){t(e.message||`Operation failed`,`error`)}finally{p(!1)}}function p(e){let t=document.getElementById(`loading-overlay`);t&&(t.style.display=e?`flex`:`none`)}async function m(){let t=await i(`/admin/dashboard`);s=t.stats,document.getElementById(`stat-revenue`).textContent=e(s.totalRevenue),document.getElementById(`stat-orders`).textContent=s.totalOrders,document.getElementById(`stat-users`).textContent=s.totalUsers,document.getElementById(`stat-stock-alert`).textContent=s.lowStockProducts;let n=document.getElementById(`recent-logs`);if(n&&(n.innerHTML=t.recentOrders.length?t.recentOrders.map(t=>`
+import{a as e,d as t,i as n,l as r,n as i,r as a,s as o}from"./utils-B7dr3Qg0.js";/* empty css              */o()||(t(`Access Denied. Admins only.`,`error`),setTimeout(()=>window.location.href=`/`,1500));var s={},c=[],l=[],u=[],d=[];document.querySelectorAll(`.admin-nav-item`).forEach(e=>{e.addEventListener(`click`,()=>{let t=e.dataset.pane;t&&(document.querySelectorAll(`.admin-nav-item`).forEach(e=>e.classList.remove(`active`)),document.querySelectorAll(`.admin-pane`).forEach(e=>e.classList.remove(`active`)),e.classList.add(`active`),document.getElementById(`pane-${t}`).classList.add(`active`),f(t))})});async function f(e){p(!0);try{switch(e){case`dashboard`:await m();break;case`orders`:await h();break;case`inventory`:await g();break;case`customers`:await y();break;case`enquiries`:await b();break}}catch(e){t(e.message||`Operation failed`,`error`)}finally{p(!1)}}function p(e){let t=document.getElementById(`loading-overlay`);t&&(t.style.display=e?`flex`:`none`)}async function m(){let t=await i(`/admin/dashboard`);s=t.stats,document.getElementById(`stat-revenue`).textContent=e(s.totalRevenue),document.getElementById(`stat-orders`).textContent=s.totalOrders,document.getElementById(`stat-users`).textContent=s.totalUsers,document.getElementById(`stat-stock-alert`).textContent=s.lowStockProducts;let n=document.getElementById(`recent-logs`);if(n&&(n.innerHTML=t.recentOrders.length?t.recentOrders.map(t=>`
       <div style="padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">
         <div style="font-size:0.75rem; color:var(--text-dim);">${a(t.createdAt)}</div>
         <div style="font-size:0.82rem; font-weight:700;">New Order #${t.orderNumber}</div>
@@ -32,7 +32,15 @@ import{a as e,d as t,i as n,l as r,n as i,r as a,s as o}from"./utils-CR0nv3qr.js
           </div>
         </td>
         <td><div style="font-weight:700; color:var(--gold-light);">${e(t.totalAmount)}</div></td>
-        <td><span class="status-badge ${r}">${t.orderStatus}</span></td>
+        <td>
+          <span class="status-badge ${r}">${t.orderStatus}</span>
+          ${t.orderStatus===`Cancelled`?`
+            <div style="font-size:0.72rem; color:#ef4444; margin-top:0.4rem; max-width:185px; word-wrap:break-word; text-align:left; background:rgba(239,68,68,0.05); padding:0.4rem; border-radius:4px; border:1px solid rgba(239,68,68,0.15);">
+              <strong>Reason:</strong> ${t.cancelReason===`Other`&&t.cancelCustomReason?t.cancelCustomReason:t.cancelReason||`Customer Cancelled`}
+              ${t.cancelFeedback?`<br><strong>Feedback:</strong> "${t.cancelFeedback}"`:``}
+            </div>
+          `:``}
+        </td>
         <td>
           <select style="padding:0.4rem; font-size:0.75rem; background:#1a1a1a; color:#fff; border:1px solid var(--admin-border); border-radius:4px;" 
                   onchange="window._updateOrderStatus('${t._id}', this.value)">

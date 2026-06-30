@@ -19,7 +19,7 @@ let discount = 0;
 // ─── Load Cart ───
 async function loadCart() {
   try {
-    // Sync local cart to server
+    // Sync local guest cart to server if any exists
     const localCart = JSON.parse(localStorage.getItem('je_cart') || '[]');
     if (localCart.length > 0) {
       for (const item of localCart) {
@@ -28,20 +28,32 @@ async function loadCart() {
             method: 'POST',
             body: JSON.stringify({ productId: item._id, qty: item.qty || 1 })
           });
-        } catch (e) { /* ignore */ }
+        } catch (e) {
+          console.error('Failed to sync guest item during checkout:', item._id, e);
+        }
       }
+      // Clear guest cart once synced
       localStorage.removeItem('je_cart');
     }
 
+    // Fetch the latest cart from the server (source of truth)
     cartData = await apiRequest('/cart');
     if (!cartData || !cartData.items || !cartData.items.length) {
       showToast('Your cart is empty', 'warning');
       setTimeout(() => window.location.href = '/', 1500);
       return;
     }
+
+    // Update the logged-in cache so that home/product pages are in sync
+    const mapped = cartData.items.map(item => ({
+      ...item.product,
+      qty: item.qty
+    }));
+    localStorage.setItem('je_cart_cache', JSON.stringify(mapped));
+
     renderCartReview();
     updateSummary();
-  } catch {
+  } catch (err) {
     showToast('Failed to load cart', 'error');
   }
 }
@@ -74,10 +86,20 @@ window.removeItem = async function(productId) {
   try {
     cartData = await apiRequest(`/cart/remove/${productId}`, { method: 'DELETE' });
     if (!cartData.items.length) {
+      // Clear the local cache since cart is now empty
+      localStorage.removeItem('je_cart_cache');
       showToast('Cart is now empty', 'info');
       setTimeout(() => window.location.href = '/', 1000);
       return;
     }
+
+    // Update the logged-in cache
+    const mapped = cartData.items.map(item => ({
+      ...item.product,
+      qty: item.qty
+    }));
+    localStorage.setItem('je_cart_cache', JSON.stringify(mapped));
+
     renderCartReview();
     updateSummary();
     showToast('Item removed', 'info');
@@ -365,6 +387,7 @@ function showSuccess(order) {
   goToStep('success');
   document.getElementById('success-order-num').textContent = `Order #${order.orderNumber}`;
   localStorage.removeItem('je_cart');
+  localStorage.removeItem('je_cart_cache');
 }
 
 // ─── Init ───

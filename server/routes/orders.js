@@ -165,6 +165,58 @@ router.patch('/:id/status', protect, adminOnly, async (req, res) => {
   }
 });
 
+// PATCH /api/orders/:id/cancel — Customer: cancel order with feedback
+router.patch('/:id/cancel', protect, async (req, res) => {
+  try {
+    const { reason, customReason, feedback } = req.body;
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Ensure the order belongs to the logged-in user
+    if (order.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized to cancel this order' });
+    }
+
+    // Check if the order is in a cancellable state
+    const nonCancellable = ['Shipped', 'Out for Delivery', 'Delivered', 'Cancelled', 'Returned'];
+    if (nonCancellable.includes(order.orderStatus)) {
+      return res.status(400).json({
+        message: `Order cannot be cancelled because it is already ${order.orderStatus}`
+      });
+    }
+
+    order.orderStatus = 'Cancelled';
+    order.cancelledAt = new Date();
+    order.cancelReason = reason || 'Cancelled by customer';
+    order.cancelCustomReason = customReason || '';
+    order.cancelFeedback = feedback || '';
+
+    // Add tracking event
+    order.trackingHistory.push({
+      status: 'Cancelled',
+      message: `Order cancelled by customer. Reason: ${reason || 'Not specified'}.`,
+      timestamp: new Date()
+    });
+
+    // Restore inventory stock and purchase counts
+    for (const item of order.items) {
+      if (item.product) {
+        await Product.findByIdAndUpdate(item.product, {
+          $inc: { stock: item.qty, purchaseCount: -item.qty }
+        });
+      }
+    }
+
+    await order.save();
+    res.json(order);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 // DELETE /api/orders/:id — Admin: delete order
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {

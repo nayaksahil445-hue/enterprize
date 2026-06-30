@@ -75,6 +75,8 @@ const orderSchema = new mongoose.Schema({
   deliveredAt: Date,
   cancelledAt: Date,
   cancelReason: String,
+  cancelCustomReason: String,
+  cancelFeedback: String,
   createdAt: {
     type: Date,
     default: Date.now

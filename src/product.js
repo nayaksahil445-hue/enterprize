@@ -12,7 +12,7 @@ let qty = 1;
 
 // ─── Init ───
 updateNavbarAuth();
-updateCartBadge();
+initializeCart();
 
 if (!productId) {
   showError();
@@ -170,23 +170,51 @@ function attachEvents(p) {
 
   // Add to cart
   document.getElementById('add-to-cart-btn')?.addEventListener('click', async () => {
-    if (!isLoggedIn()) {
-      showToast('Please login to add items to cart', 'warning');
-      setTimeout(() => window.location.href = '/auth.html', 1000);
-      return;
-    }
-    try {
-      await apiRequest('/cart/add', {
-        method: 'POST',
-        body: JSON.stringify({ productId: p._id, qty })
-      });
+    const btn = document.getElementById('add-to-cart-btn');
+    if (!btn) return;
+
+    if (isLoggedIn()) {
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Adding...';
+        const res = await apiRequest('/cart/add', {
+          method: 'POST',
+          body: JSON.stringify({ productId: p._id, qty })
+        });
+        showToast(`${p.name} added to cart!`, 'success');
+        
+        // Update local logged-in cache
+        if (res && res.items) {
+          const updatedCart = res.items.map(item => ({
+            ...item.product,
+            qty: item.qty
+          }));
+          localStorage.setItem('je_cart_cache', JSON.stringify(updatedCart));
+        }
+        
+        updateCartBadge();
+        btn.textContent = '✓ Added!';
+        setTimeout(() => btn.textContent = 'Add to Cart', 2000);
+      } catch (err) {
+        showToast(err.message || 'Failed to add to cart', 'error');
+        btn.textContent = 'Add to Cart';
+      } finally {
+        btn.disabled = false;
+      }
+    } else {
+      // Local guest cart
+      const guestCart = JSON.parse(localStorage.getItem('je_cart') || '[]');
+      const existing = guestCart.find(i => i._id === p._id);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        guestCart.push({ ...p, qty });
+      }
+      localStorage.setItem('je_cart', JSON.stringify(guestCart));
       showToast(`${p.name} added to cart!`, 'success');
       updateCartBadge();
-      const btn = document.getElementById('add-to-cart-btn');
       btn.textContent = '✓ Added!';
       setTimeout(() => btn.textContent = 'Add to Cart', 2000);
-    } catch (err) {
-      showToast(err.message || 'Failed to add to cart', 'error');
     }
   });
 
@@ -323,11 +351,39 @@ async function loadRecommendations() {
 
 // ─── Cart Badge ───
 function updateCartBadge() {
-  const cart = JSON.parse(localStorage.getItem('je_cart') || '[]');
+  const isLogged = isLoggedIn();
+  const cartKey = isLogged ? 'je_cart_cache' : 'je_cart';
+  const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
   const count = cart.reduce((a, i) => a + (i.qty || 1), 0);
   const badge = document.getElementById('cart-count');
   if (badge) {
     badge.textContent = count;
     badge.style.display = count > 0 ? 'flex' : 'none';
+  }
+}
+
+// ─── Initialize Cart & Listeners ───
+async function initializeCart() {
+  updateCartBadge();
+
+  // Redirect to home page and open cart drawer when clicking cart navbar button
+  document.getElementById('cart-trigger')?.addEventListener('click', () => {
+    window.location.href = '/?open-cart=true';
+  });
+
+  if (isLoggedIn()) {
+    try {
+      const serverCart = await apiRequest('/cart');
+      if (serverCart && serverCart.items) {
+        const mapped = serverCart.items.map(item => ({
+          ...item.product,
+          qty: item.qty
+        }));
+        localStorage.setItem('je_cart_cache', JSON.stringify(mapped));
+        updateCartBadge();
+      }
+    } catch (err) {
+      console.error('Failed to initialize cart on product page:', err);
+    }
   }
 }

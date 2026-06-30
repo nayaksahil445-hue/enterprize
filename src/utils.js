@@ -1,6 +1,7 @@
 /* ============================================================
    JAGANNATH ENTERPRISES — SHARED UTILITIES
    ============================================================ */
+import './chatbot.js';
 
 export const API_URL = import.meta.env.VITE_API_URL || 'https://jaganath-backend.onrender.com/api';
 

@@ -131,7 +131,15 @@ async function loadOrders() {
           </div>
         </td>
         <td><div style="font-weight:700; color:var(--gold-light);">${formatPrice(o.totalAmount)}</div></td>
-        <td><span class="status-badge ${s}">${o.orderStatus}</span></td>
+        <td>
+          <span class="status-badge ${s}">${o.orderStatus}</span>
+          ${o.orderStatus === 'Cancelled' ? `
+            <div style="font-size:0.72rem; color:#ef4444; margin-top:0.4rem; max-width:185px; word-wrap:break-word; text-align:left; background:rgba(239,68,68,0.05); padding:0.4rem; border-radius:4px; border:1px solid rgba(239,68,68,0.15);">
+              <strong>Reason:</strong> ${o.cancelReason === 'Other' && o.cancelCustomReason ? o.cancelCustomReason : (o.cancelReason || 'Customer Cancelled')}
+              ${o.cancelFeedback ? `<br><strong>Feedback:</strong> "${o.cancelFeedback}"` : ''}
+            </div>
+          ` : ''}
+        </td>
         <td>
           <select style="padding:0.4rem; font-size:0.75rem; background:#1a1a1a; color:#fff; border:1px solid var(--admin-border); border-radius:4px;" 
                   onchange="window._updateOrderStatus('${o._id}', this.value)">
