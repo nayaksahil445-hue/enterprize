@@ -93,7 +93,7 @@ import{a as e,c as t,d as n,n as r,p as i,r as a}from"./utils-B7dr3Qg0.js";/* em
         <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;margin-bottom:0.75rem;">Items Ordered</div>
         ${(t.items||[]).map(t=>`
           <div class="order-item-row">
-            <div class="order-item-thumb">${t.image?`<img src="${t.image}">`:`🪑`}</div>
+            <div class="order-item-thumb">${t.image?`<img src="${t.image}" alt="${t.productName||`Ordered item`}">`:`🪑`}</div>
             <div style="flex:1;">
               <div style="font-weight:700;font-size:0.88rem;">${t.productName}</div>
               <div style="font-size:0.75rem;color:var(--text-muted);">${t.category||``} | Qty: ${t.qty}</div>

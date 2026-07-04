@@ -132,7 +132,7 @@ function renderOrder(order) {
         <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;margin-bottom:0.75rem;">Items Ordered</div>
         ${(order.items || []).map(i => `
           <div class="order-item-row">
-            <div class="order-item-thumb">${i.image ? `<img src="${i.image}">` : '🪑'}</div>
+            <div class="order-item-thumb">${i.image ? `<img src="${i.image}" alt="${i.productName || 'Ordered item'}">` : '🪑'}</div>
             <div style="flex:1;">
               <div style="font-weight:700;font-size:0.88rem;">${i.productName}</div>
               <div style="font-size:0.75rem;color:var(--text-muted);">${i.category || ''} | Qty: ${i.qty}</div>

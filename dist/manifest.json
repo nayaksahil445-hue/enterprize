@@ -1,0 +1,21 @@
+{
+  "name": "Jagannath Enterprises — Industrial Furniture & Storage Solutions",
+  "short_name": "Jagannath",
+  "description": "Premium industrial furniture manufacturer — Cupboards, Dressing Tables, Cabinets, Shelves and Chest of Drawers for modern enterprises.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#c9a227",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "shopping"],
+  "lang": "en",
+  "dir": "ltr"
+}

@@ -182,7 +182,7 @@ async function loadInventory() {
         <td>
           <div style="display:flex; align-items:center; gap:0.5rem;">
             <div style="width:40px; height:40px; background:#1a1a1a; border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-              ${p.image ? `<img src="${p.image}" style="width:100%; height:100%; object-fit:contain;" onerror="this.outerHTML='🪑'">` : '🪑'}
+              ${p.image ? `<img src="${p.image}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain;" onerror="this.outerHTML='🪑'">` : '🪑'}
             </div>
             <div>
               <div style="font-weight:700;">${p.name}</div>

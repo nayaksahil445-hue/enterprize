@@ -17,7 +17,7 @@ import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-B7dr
           <div class="order-card-items">
             ${(t.items||[]).map(e=>`
               <div class="order-card-item">
-                ${e.image?`<img src="${e.image}" onerror="this.outerHTML='🪑'">`:`🪑`}
+                ${e.image?`<img src="${e.image}" alt="${e.productName||`Order item`}" onerror="this.outerHTML='🪑'">`:`🪑`}
                 <span>${e.productName} × ${e.qty}</span>
               </div>
             `).join(``)}
@@ -34,15 +34,15 @@ import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-B7dr
         <div style="font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;margin-bottom:1.5rem;">Edit Profile</div>
         <form class="profile-form" id="profile-form">
           <div class="pf-group">
-            <label>Full Name</label>
+            <label for="pf-name">Full Name</label>
             <input type="text" id="pf-name" value="${e.name||``}" />
           </div>
           <div class="pf-group">
-            <label>Email (cannot change)</label>
-            <input type="email" value="${e.email||``}" disabled style="opacity:0.5;" />
+            <label for="pf-email">Email (cannot change)</label>
+            <input type="email" id="pf-email" value="${e.email||``}" disabled style="opacity:0.5;" />
           </div>
           <div class="pf-group">
-            <label>Phone</label>
+            <label for="pf-phone">Phone</label>
             <input type="tel" id="pf-phone" value="${e.phone||``}" placeholder="+91 XXXXX XXXXX" />
           </div>
           <button type="submit" class="btn btn-gold" style="margin-top:0.5rem;">Update Profile</button>
@@ -103,7 +103,7 @@ import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-B7dr
         ${t.map(t=>`
           <div class="dash-card" style="padding:0;overflow:hidden;cursor:pointer;" onclick="window.location.href='/product.html?id=${t._id}'">
             <div style="height:180px;background:var(--dark-4);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-              ${t.image?`<img src="${t.image}" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='<div style=font-size:3rem>🪑</div>'">`:`<div style="font-size:3rem;">🪑</div>`}
+              ${t.image?`<img src="${t.image}" alt="${t.name}" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='<div style=font-size:3rem>🪑</div>'">`:`<div style="font-size:3rem;">🪑</div>`}
             </div>
             <div style="padding:1.25rem;">
               <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;">${t.category}</div>

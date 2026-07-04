@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /product.html
+Allow: /auth.html
+
+Disallow: /admin.html
+Disallow: /dashboard.html
+Disallow: /checkout.html
+Disallow: /tracking.html
+
+# Sitemap
+Sitemap: https://jagannath-enterprises.com/sitemap.xml

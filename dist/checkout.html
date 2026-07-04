@@ -4,7 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout | Jagannath Enterprises</title>
-  <meta name="description" content="Complete your order at Jagannath Enterprises." />
+  <meta name="description" content="Complete your order at Jagannath Enterprises. Secure checkout with multiple payment options." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Jagannath Enterprises" />
+  <meta name="theme-color" content="#c9a227" />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- Favicon & Manifest -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -141,9 +151,9 @@
       .co-row { grid-template-columns: 1fr; }
     }
   </style>
-  <script type="module" crossorigin src="/assets/checkout-DZUbTsFb.js"></script>
+  <script type="module" crossorigin src="/assets/checkout-Cca74iLP.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/utils-B7dr3Qg0.js">
-  <link rel="stylesheet" crossorigin href="/assets/style-DxPQ0p4k.css">
+  <link rel="stylesheet" crossorigin href="/assets/style-D2Ir4RdT.css">
 </head>
 <body>
   <!-- NAV -->
@@ -158,6 +168,7 @@
     </div>
   </nav>
 
+  <main>
   <div class="checkout-wrapper">
     <div class="checkout-header">
       <h1>Checkout</h1>
@@ -188,15 +199,15 @@
           <div id="saved-addresses"></div>
           <form class="co-form" id="address-form">
             <div class="co-row">
-              <div class="co-group"><label>Full Name *</label><input type="text" id="addr-name" required placeholder="Rajesh Kumar"></div>
-              <div class="co-group"><label>Phone *</label><input type="tel" id="addr-phone" required placeholder="+91 98100 XXXXX"></div>
+              <div class="co-group"><label for="addr-name">Full Name *</label><input type="text" id="addr-name" required placeholder="Rajesh Kumar"></div>
+              <div class="co-group"><label for="addr-phone">Phone *</label><input type="tel" id="addr-phone" required placeholder="+91 98100 XXXXX"></div>
             </div>
-            <div class="co-group"><label>Street Address *</label><input type="text" id="addr-street" required placeholder="123, Main Road, Sector 14"></div>
+            <div class="co-group"><label for="addr-street">Street Address *</label><input type="text" id="addr-street" required placeholder="123, Main Road, Sector 14"></div>
             <div class="co-row">
-              <div class="co-group"><label>City *</label><input type="text" id="addr-city" required placeholder="New Delhi"></div>
-              <div class="co-group"><label>State *</label><input type="text" id="addr-state" required placeholder="Delhi"></div>
+              <div class="co-group"><label for="addr-city">City *</label><input type="text" id="addr-city" required placeholder="New Delhi"></div>
+              <div class="co-group"><label for="addr-state">State *</label><input type="text" id="addr-state" required placeholder="Delhi"></div>
             </div>
-            <div class="co-group" style="max-width:200px;"><label>Pincode *</label><input type="text" id="addr-pincode" required placeholder="110020" maxlength="6"></div>
+            <div class="co-group" style="max-width:200px;"><label for="addr-pincode">Pincode *</label><input type="text" id="addr-pincode" required placeholder="110020" maxlength="6"></div>
             <div class="co-btn-row">
               <button type="button" class="co-btn co-btn-secondary" id="step2-back">← Back</button>
               <button type="submit" class="co-btn co-btn-primary">Proceed to Payment →</button>
@@ -274,6 +285,7 @@
       </div>
     </div>
   </div>
+  </main>
 
 </body>
 </html>

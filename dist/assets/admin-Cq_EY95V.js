@@ -53,7 +53,7 @@ import{a as e,d as t,i as n,l as r,n as i,r as a,s as o}from"./utils-B7dr3Qg0.js
         <td>
           <div style="display:flex; align-items:center; gap:0.5rem;">
             <div style="width:40px; height:40px; background:#1a1a1a; border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-              ${t.image?`<img src="${t.image}" style="width:100%; height:100%; object-fit:contain;" onerror="this.outerHTML='🪑'">`:`🪑`}
+              ${t.image?`<img src="${t.image}" alt="${t.name}" style="width:100%; height:100%; object-fit:contain;" onerror="this.outerHTML='🪑'">`:`🪑`}
             </div>
             <div>
               <div style="font-weight:700;">${t.name}</div>

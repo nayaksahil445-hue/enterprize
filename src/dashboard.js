@@ -59,7 +59,7 @@ async function loadOrders() {
           <div class="order-card-items">
             ${(o.items || []).map(i => `
               <div class="order-card-item">
-                ${i.image ? `<img src="${i.image}" onerror="this.outerHTML='🪑'">` : '🪑'}
+                ${i.image ? `<img src="${i.image}" alt="${i.productName || 'Order item'}" onerror="this.outerHTML='🪑'">` : '🪑'}
                 <span>${i.productName} × ${i.qty}</span>
               </div>
             `).join('')}
@@ -87,15 +87,15 @@ async function loadProfile() {
         <div style="font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;margin-bottom:1.5rem;">Edit Profile</div>
         <form class="profile-form" id="profile-form">
           <div class="pf-group">
-            <label>Full Name</label>
+            <label for="pf-name">Full Name</label>
             <input type="text" id="pf-name" value="${profile.name || ''}" />
           </div>
           <div class="pf-group">
-            <label>Email (cannot change)</label>
-            <input type="email" value="${profile.email || ''}" disabled style="opacity:0.5;" />
+            <label for="pf-email">Email (cannot change)</label>
+            <input type="email" id="pf-email" value="${profile.email || ''}" disabled style="opacity:0.5;" />
           </div>
           <div class="pf-group">
-            <label>Phone</label>
+            <label for="pf-phone">Phone</label>
             <input type="tel" id="pf-phone" value="${profile.phone || ''}" placeholder="+91 XXXXX XXXXX" />
           </div>
           <button type="submit" class="btn btn-gold" style="margin-top:0.5rem;">Update Profile</button>
@@ -241,7 +241,7 @@ async function loadWishlist() {
         ${wishlist.map(p => `
           <div class="dash-card" style="padding:0;overflow:hidden;cursor:pointer;" onclick="window.location.href='/product.html?id=${p._id}'">
             <div style="height:180px;background:var(--dark-4);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-              ${p.image ? `<img src="${p.image}" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='<div style=font-size:3rem>🪑</div>'">` : '<div style="font-size:3rem;">🪑</div>'}
+              ${p.image ? `<img src="${p.image}" alt="${p.name}" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='<div style=font-size:3rem>🪑</div>'">` : '<div style="font-size:3rem;">🪑</div>'}
             </div>
             <div style="padding:1.25rem;">
               <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;">${p.category}</div>

@@ -4,12 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login & Register | Jagannath Enterprises</title>
-  <meta name="description" content="Sign in or create an account at Jagannath Enterprises — India's trusted industrial furniture partner." />
+  <meta name="description" content="Sign in or create an account at Jagannath Enterprises — India's trusted industrial furniture partner since 1998. Access your orders, wishlist, and exclusive deals." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://jagannath-enterprises.com/auth.html" />
+  <meta name="author" content="Jagannath Enterprises" />
+  <meta name="theme-color" content="#c9a227" />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jagannath-enterprises.com/auth.html" />
+  <meta property="og:title" content="Login & Register | Jagannath Enterprises" />
+  <meta property="og:description" content="Sign in or create your Jagannath Enterprises account to access orders, wishlist, and exclusive deals." />
+  <meta property="og:image" content="https://jagannath-enterprises.com/images/og-preview.jpg" />
+  <meta property="og:site_name" content="Jagannath Enterprises" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Login & Register | Jagannath Enterprises" />
+  <meta name="twitter:description" content="Sign in or create your Jagannath Enterprises account." />
+
+  <!-- Favicon & Manifest -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+    /* Auth page styles */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --gold: #c9a227; --gold-light: #e4b84a; --gold-dark: #a67c1e;
@@ -201,7 +225,9 @@
 
 <div class="auth-bg"></div>
 
-<a href="/" class="back-link">← Back to Store</a>
+<a href="/" class="back-link" rel="noopener">← Back to Store</a>
+
+<main>
 
 <div class="auth-card">
   <div class="auth-logo">
@@ -217,11 +243,11 @@
   <!-- LOGIN FORM -->
   <form class="auth-form active" id="login-form">
     <div class="form-group">
-      <label>Email Address</label>
+      <label for="login-email">Email Address</label>
       <input type="email" name="email" placeholder="you@company.com" required id="login-email" />
     </div>
     <div class="form-group">
-      <label>Password</label>
+      <label for="login-password">Password</label>
       <input type="password" name="password" placeholder="Enter your password" required id="login-password" />
     </div>
     <button type="submit" class="auth-submit" id="login-submit">Sign In →</button>
@@ -237,31 +263,32 @@
   <form class="auth-form" id="register-form">
     <div class="form-row">
       <div class="form-group">
-        <label>Full Name</label>
+        <label for="reg-name">Full Name</label>
         <input type="text" name="name" placeholder="Rajesh Kumar" required id="reg-name" />
       </div>
       <div class="form-group">
-        <label>Phone</label>
+        <label for="reg-phone">Phone</label>
         <input type="tel" name="phone" placeholder="+91 98100 XXXXX" id="reg-phone" />
       </div>
     </div>
     <div class="form-group">
-      <label>Email Address</label>
+      <label for="reg-email">Email Address</label>
       <input type="email" name="email" placeholder="you@company.com" required id="reg-email" />
     </div>
     <div class="form-group">
-      <label>Password (min 6 characters)</label>
+      <label for="reg-password">Password (min 6 characters)</label>
       <input type="password" name="password" placeholder="Create a strong password" required minlength="6" id="reg-password" />
       <div class="password-strength"><div class="bar" id="pw-bar"></div></div>
     </div>
     <div class="form-group">
-      <label>Confirm Password</label>
+      <label for="reg-confirm">Confirm Password</label>
       <input type="password" name="confirmPassword" placeholder="Confirm your password" required id="reg-confirm" />
     </div>
     <button type="submit" class="auth-submit" id="register-submit">Create Account →</button>
     <div id="register-msg" class="auth-msg" style="display:none;"></div>
   </form>
 </div>
+</main>
 
 <script type="module" src="/src/auth.js"></script>
 </body>

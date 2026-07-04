@@ -4,7 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Dashboard | Jagannath Enterprises</title>
-  <meta name="description" content="Manage your orders, profile and wishlist at Jagannath Enterprises." />
+  <meta name="description" content="Manage your orders, profile, addresses and wishlist at Jagannath Enterprises." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Jagannath Enterprises" />
+  <meta name="theme-color" content="#c9a227" />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- Favicon & Manifest -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -131,6 +141,7 @@
     </div>
   </nav>
 
+  <main>
   <div class="dash-wrapper">
     <div class="dash-header">
       <div class="dash-avatar" id="dash-avatar">U</div>
@@ -152,6 +163,7 @@
     <div class="dash-pane" id="pane-addresses"><div id="addresses-content"></div></div>
     <div class="dash-pane" id="pane-wishlist"><div id="wishlist-content"></div></div>
   </div>
+  </main>
 
   <script type="module" src="/src/dashboard.js"></script>
 </body>

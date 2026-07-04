@@ -45,6 +45,74 @@ function showError() {
 
 function renderProduct(p) {
   document.title = `${p.name} | Jagannath Enterprises`;
+  
+  // Dynamic SEO meta updates
+  const inStock = p.stock > 0;
+  const descText = p.description || `Buy ${p.name} at Jagannath Enterprises. Premium quality ${p.category} industrial furniture with 5-year warranty.`;
+  
+  const descMeta = document.querySelector('meta[name="description"]');
+  if (descMeta) descMeta.setAttribute('content', descText);
+  
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute('content', `${p.name} | Jagannath Enterprises`);
+  
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute('content', descText);
+  
+  const ogImage = document.querySelector('meta[property="og:image"]');
+  if (ogImage && p.image) {
+    ogImage.setAttribute('content', p.image.startsWith('http') ? p.image : `https://jagannath-enterprises.com${p.image}`);
+  }
+  
+  const ogUrl = document.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.setAttribute('content', window.location.href);
+
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  if (canonicalLink) canonicalLink.setAttribute('href', window.location.href);
+
+  // Dynamic Product JSON-LD Schema
+  let schemaScript = document.getElementById('product-schema');
+  if (!schemaScript) {
+    schemaScript = document.createElement('script');
+    schemaScript.id = 'product-schema';
+    schemaScript.type = 'application/ld+json';
+    document.head.appendChild(schemaScript);
+  }
+  
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": p.name,
+    "image": p.image ? (p.image.startsWith('http') ? p.image : `https://jagannath-enterprises.com${p.image}`) : "https://jagannath-enterprises.com/favicon.svg",
+    "description": descText,
+    "category": p.category,
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "INR",
+      "price": p.price,
+      "priceValidUntil": "2027-12-31",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Jagannath Enterprises"
+      }
+    }
+  };
+  
+  if (p.rating && p.numReviews) {
+    productSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": p.rating,
+      "reviewCount": p.numReviews,
+      "bestRating": "5",
+      "worstRating": "1"
+    };
+  }
+
+  schemaScript.textContent = JSON.stringify(productSchema, null, 2);
+
   document.getElementById('product-loading').style.display = 'none';
   const content = document.getElementById('product-content');
   content.style.display = 'block';
@@ -53,7 +121,6 @@ function renderProduct(p) {
     ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
     : 0;
 
-  const inStock = p.stock > 0;
   const isLow = p.stock > 0 && p.stock <= (p.lowStockThreshold || 10);
 
   // Build specs
