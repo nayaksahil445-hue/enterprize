@@ -1,3 +1,4 @@
+import './pwa-setup.js';
 import { API_URL, saveAuth, getUser, showToast } from './utils.js';
 
 // Redirect if already logged in

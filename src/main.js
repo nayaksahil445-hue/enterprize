@@ -1,4 +1,5 @@
 import './style.css';
+import './pwa-setup.js';
 import { API_URL, updateNavbarAuth, isLoggedIn, apiRequest, showToast, formatPrice, starRating, getUser } from './utils.js';
 
 /* ============================================================

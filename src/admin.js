@@ -1,3 +1,4 @@
+import './pwa-setup.js';
 import { apiRequest, formatPrice, formatDate, formatDateShort, showToast, isAdmin, logout } from './utils.js';
 
 /* ============================================================

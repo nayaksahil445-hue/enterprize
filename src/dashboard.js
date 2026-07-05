@@ -1,3 +1,4 @@
+import './pwa-setup.js';
 import { apiRequest, formatPrice, formatDate, formatDateShort, showToast, updateNavbarAuth, isLoggedIn, getUser, starRating } from './utils.js';
 
 if (!isLoggedIn()) { window.location.href = '/auth.html'; }

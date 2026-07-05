@@ -1,3 +1,4 @@
+import './pwa-setup.js';
 import { apiRequest, formatPrice, showToast, updateNavbarAuth, isLoggedIn, getUser } from './utils.js';
 
 const API_URL = 'http://localhost:5000/api';
