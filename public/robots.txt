@@ -10,4 +10,4 @@ Disallow: /checkout.html
 Disallow: /tracking.html
 
 # Sitemap
-Sitemap: https://jagannath-enterprises.com/sitemap.xml
+Sitemap: https://enterprize-sand.vercel.app/sitemap.xml

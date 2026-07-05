@@ -61,7 +61,7 @@ function renderProduct(p) {
   
   const ogImage = document.querySelector('meta[property="og:image"]');
   if (ogImage && p.image) {
-    ogImage.setAttribute('content', p.image.startsWith('http') ? p.image : `https://jagannath-enterprises.com${p.image}`);
+    ogImage.setAttribute('content', p.image.startsWith('http') ? p.image : `https://enterprize-sand.vercel.app${p.image}`);
   }
   
   const ogUrl = document.querySelector('meta[property="og:url"]');
@@ -83,7 +83,7 @@ function renderProduct(p) {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": p.name,
-    "image": p.image ? (p.image.startsWith('http') ? p.image : `https://jagannath-enterprises.com${p.image}`) : "https://jagannath-enterprises.com/favicon.svg",
+    "image": p.image ? (p.image.startsWith('http') ? p.image : `https://enterprize-sand.vercel.app${p.image}`) : "https://enterprize-sand.vercel.app/favicon.svg",
     "description": descText,
     "category": p.category,
     "offers": {
