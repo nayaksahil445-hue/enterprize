@@ -248,6 +248,8 @@ select {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-head);
   font-weight: 800;
   font-size: 1.1rem;
@@ -260,8 +262,13 @@ select {
   font-style: normal;
 }
 
-.brand-icon {
-  margin-right: 0.4rem;
+.brand-logo-img {
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+  margin-right: 0.6rem;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .nav-links {
