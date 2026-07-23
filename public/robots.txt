@@ -1,13 +1,11 @@
 User-agent: *
 Allow: /
-Allow: /index.html
-Allow: /product.html
-Allow: /auth.html
 
 Disallow: /admin.html
 Disallow: /dashboard.html
-Disallow: /checkout.html
-Disallow: /tracking.html
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /checkout
+Disallow: /tracking
 
-# Sitemap
 Sitemap: https://enterprize-sand.vercel.app/sitemap.xml

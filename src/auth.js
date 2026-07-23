@@ -4,7 +4,7 @@ import { API_URL, saveAuth, getUser, showToast } from './utils.js';
 // Redirect if already logged in
 const user = getUser();
 if (user) {
-  window.location.href = user.role === 'admin' ? '/admin.html' : '/';
+  window.location.href = user.role === 'admin' ? '/admin' : '/';
 }
 
 // ─── Tab Switching ───
@@ -79,7 +79,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     showMsg('login-msg', '✓ Login successful! Redirecting...', 'success');
 
     setTimeout(() => {
-      window.location.href = data.user.role === 'admin' ? '/admin.html' : '/';
+      window.location.href = data.user.role === 'admin' ? '/admin' : '/';
     }, 800);
   } catch (err) {
     showMsg('login-msg', 'Server not reachable. Check if backend is running.');

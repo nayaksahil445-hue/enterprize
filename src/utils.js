@@ -210,9 +210,9 @@ export function updateNavbarAuth() {
             <div style="font-weight:700; color:#fff; font-size:0.9rem;">${user.name}</div>
             <div style="color:var(--text-muted); font-size:0.75rem;">${user.email}</div>
           </div>
-          <a href="/dashboard.html" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1.25rem;color:var(--text-muted);font-size:0.82rem;font-weight:500;transition:all 0.2s;" onmouseover="this.style.color='var(--gold)';this.style.background='rgba(201,162,39,0.05)'" onmouseout="this.style.color='var(--text-muted)';this.style.background='none'">📋 My Orders</a>
-          <a href="/dashboard.html#wishlist" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1.25rem;color:var(--text-muted);font-size:0.82rem;font-weight:500;transition:all 0.2s;" onmouseover="this.style.color='var(--gold)';this.style.background='rgba(201,162,39,0.05)'" onmouseout="this.style.color='var(--text-muted)';this.style.background='none'">❤️ Wishlist</a>
-          ${user.role === 'admin' ? `<a href="/admin.html" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1.25rem;color:var(--text-muted);font-size:0.82rem;font-weight:500;transition:all 0.2s;" onmouseover="this.style.color='var(--gold)';this.style.background='rgba(201,162,39,0.05)'" onmouseout="this.style.color='var(--text-muted)';this.style.background='none'">⚙️ Admin Panel</a>` : ''}
+          <a href="/dashboard" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1.25rem;color:var(--text-muted);font-size:0.82rem;font-weight:500;transition:all 0.2s;" onmouseover="this.style.color='var(--gold)';this.style.background='rgba(201,162,39,0.05)'" onmouseout="this.style.color='var(--text-muted)';this.style.background='none'">📋 My Orders</a>
+          <a href="/dashboard#wishlist" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1.25rem;color:var(--text-muted);font-size:0.82rem;font-weight:500;transition:all 0.2s;" onmouseover="this.style.color='var(--gold)';this.style.background='rgba(201,162,39,0.05)'" onmouseout="this.style.color='var(--text-muted)';this.style.background='none'">❤️ Wishlist</a>
+          ${user.role === 'admin' ? `<a href="/admin" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1.25rem;color:var(--text-muted);font-size:0.82rem;font-weight:500;transition:all 0.2s;" onmouseover="this.style.color='var(--gold)';this.style.background='rgba(201,162,39,0.05)'" onmouseout="this.style.color='var(--text-muted)';this.style.background='none'">⚙️ Admin Panel</a>` : ''}
           <div style="border-top:1px solid rgba(255,255,255,0.06); margin-top:0.25rem; padding-top:0.25rem;">
             <button id="nav-logout-btn" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1.25rem;color:#ef4444;font-size:0.82rem;font-weight:500;background:none;border:none;cursor:pointer;width:100%;text-align:left;transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.05)'" onmouseout="this.style.background='none'">🚪 Logout</button>
           </div>
@@ -221,7 +221,7 @@ export function updateNavbarAuth() {
     `;
   } else {
     authArea.innerHTML = `
-      <a href="/auth.html" style="
+      <a href="/auth" style="
         padding:0.55rem 1.2rem; border:1px solid var(--border);
         color:var(--gold); font-size:0.72rem; font-weight:600;
         letter-spacing:1.5px; text-transform:uppercase;
@@ -329,4 +329,24 @@ export function starRating(rating, max = 5) {
     }
   }
   return html;
+}
+
+// ─── Rich Alt Text Generator for SEO ───
+export function getProductAltText(name, category) {
+  const lowerCat = (category || '').toLowerCase();
+  const lowerName = (name || '').toLowerCase();
+  let keyword = 'industrial steel cupboard manufacturer - steel almirah price';
+
+  if (lowerCat.includes('storage') || lowerName.includes('cupboard') || lowerName.includes('almirah')) {
+    keyword = 'steel almirah with locker 2 door 3 door steel almirah - industrial steel cupboard manufacturer New Delhi Odisha';
+  } else if (lowerCat.includes('luxury') || lowerName.includes('dressing')) {
+    keyword = 'steel wardrobe online India - steel dressing table manufacturer';
+  } else if (lowerCat.includes('office') || lowerName.includes('cabinet')) {
+    keyword = 'office almirah manufacturer - steel cupboard India steel file cabinet';
+  } else if (lowerCat.includes('shelving') || lowerName.includes('shelf')) {
+    keyword = 'heavy duty industrial steel cupboard manufacturer near me New Delhi Odisha';
+  } else if (lowerCat.includes('vintage') || lowerName.includes('chest') || lowerName.includes('drawer')) {
+    keyword = '4 door steel almirah chest of drawers - best steel almirah price';
+  }
+  return `${name} (${keyword})`;
 }

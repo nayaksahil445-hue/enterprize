@@ -1,7 +1,7 @@
 import './pwa-setup.js';
-import { apiRequest, formatPrice, formatDate, formatDateShort, showToast, updateNavbarAuth, isLoggedIn, getUser, starRating } from './utils.js';
+import { apiRequest, formatPrice, formatDate, formatDateShort, showToast, updateNavbarAuth, isLoggedIn, getUser, starRating, getProductAltText } from './utils.js';
 
-if (!isLoggedIn()) { window.location.href = '/auth.html'; }
+if (!isLoggedIn()) { window.location.href = '/auth'; }
 
 const user = getUser();
 updateNavbarAuth();
@@ -68,7 +68,7 @@ async function loadOrders() {
           <div class="order-card-footer">
             <div class="order-total">${formatPrice(o.totalAmount)}</div>
             <div style="display:flex;gap:0.75rem;">
-              <a href="/tracking.html?id=${o._id}" class="track-btn">Track Order →</a>
+              <a href="/tracking?id=${o._id}" class="track-btn">Track Order →</a>
             </div>
           </div>
         </div>
@@ -240,9 +240,9 @@ async function loadWishlist() {
     container.innerHTML = `
       <div class="wishlist-grid">
         ${wishlist.map(p => `
-          <div class="dash-card" style="padding:0;overflow:hidden;cursor:pointer;" onclick="window.location.href='/product.html?id=${p._id}'">
+          <div class="dash-card" style="padding:0;overflow:hidden;cursor:pointer;" onclick="window.location.href='/product?id=${p._id}'">
             <div style="height:180px;background:var(--dark-4);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-              ${p.image ? `<img src="${p.image}" alt="${p.name}" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='<div style=font-size:3rem>🪑</div>'">` : '<div style="font-size:3rem;">🪑</div>'}
+              ${p.image ? `<img src="${p.image}" alt="${getProductAltText(p.name, p.category)}" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='<div style=font-size:3rem>🪑</div>'">` : '<div style="font-size:3rem;">🪑</div>'}
             </div>
             <div style="padding:1.25rem;">
               <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;">${p.category}</div>

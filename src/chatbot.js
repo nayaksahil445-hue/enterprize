@@ -524,7 +524,7 @@ class Chatbot {
     const card = document.createElement('div');
     card.className = 'je-chat-card';
     card.innerHTML = `
-      <button class="je-chat-btn je-chat-btn-primary" onclick="window.location.href='/dashboard.html'">Go to My Dashboard</button>
+      <button class="je-chat-btn je-chat-btn-primary" onclick="window.location.href='/dashboard'">Go to My Dashboard</button>
       <button class="je-chat-btn je-chat-btn-secondary" id="je-chat-back-btn">Main Menu</button>
     `;
     card.querySelector('#je-chat-back-btn')?.addEventListener('click', () => {
@@ -561,7 +561,7 @@ class Chatbot {
     if (!isLoggedIn()) {
       this.addBotMessage("Please log in to your account first to view and cancel your orders.");
       this.showQuickOptions([
-        { text: "Sign In Now", action: () => window.location.href = '/auth.html' },
+        { text: "Sign In Now", action: () => window.location.href = '/auth' },
         { text: "Main Menu", action: () => this.startConversation() }
       ]);
       return;
@@ -759,13 +759,13 @@ class Chatbot {
         localStorage.setItem(`je_cancel_record_${this.selectedOrder._id}`, JSON.stringify(cancelRecord));
 
         // Trigger dashboard update if the user is on the dashboard page
-        if (window.location.pathname.includes('dashboard.html')) {
+        if (window.location.pathname.includes('dashboard')) {
           const tabOrdersBtn = document.querySelector('[data-pane="orders"]');
           if (tabOrdersBtn) tabOrdersBtn.click(); // Re-trigger tab click to reload order list
         }
         
         // Trigger tracking update if the user is on the tracking page
-        if (window.location.pathname.includes('tracking.html')) {
+        if (window.location.pathname.includes('tracking')) {
           window.location.reload();
         }
 
@@ -813,7 +813,7 @@ class Chatbot {
       this.addBotMessage("All items have been added to your cart. Would you like to proceed to checkout?");
       
       this.showQuickOptions([
-        { text: "Checkout Now", action: () => window.location.href = '/checkout.html' },
+        { text: "Checkout Now", action: () => window.location.href = '/checkout' },
         { text: "View Cart Drawer", action: () => {
           window.location.href = '/?open-cart=true';
         }},
@@ -830,7 +830,7 @@ class Chatbot {
 // Instantiate Chatbot on load
 window.addEventListener('DOMContentLoaded', () => {
   // Only initialize on customer-facing pages (ignore admin.html)
-  if (!window.location.pathname.includes('admin.html')) {
+  if (!window.location.pathname.includes('admin')) {
     window.jeChatbot = new Chatbot();
   }
 });

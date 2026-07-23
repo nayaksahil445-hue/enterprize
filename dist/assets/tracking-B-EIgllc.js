@@ -1,18 +1,18 @@
-import{a as e,c as t,d as n,n as r,p as i,r as a}from"./utils-DvWvbBi4.js";/* empty css              */t()||(window.location.href=`/auth.html`),i();var o=new URLSearchParams(window.location.search).get(`id`);o?s():document.getElementById(`tracking-content`).innerHTML=`
+import{a as e,f as t,l as n,m as r,n as i,o as a,r as o}from"./utils-iyttRNOh.js";/* empty css              */import"./pwa-setup-DtGWAku0.js";n()||(window.location.href=`/auth`),r();var s=new URLSearchParams(window.location.search).get(`id`);s?c():document.getElementById(`tracking-content`).innerHTML=`
     <div style="text-align:center;padding:4rem;">
       <div style="font-size:3rem;margin-bottom:1rem;">🔍</div>
       <h2 style="font-family:var(--font-display);letter-spacing:2px;margin-bottom:0.5rem;">No Order ID</h2>
       <p style="color:var(--text-muted);margin-bottom:2rem;">Please access this page from your orders dashboard.</p>
-      <a href="/dashboard.html" class="btn btn-gold">View My Orders</a>
+      <a href="/dashboard" class="btn btn-gold">View My Orders</a>
     </div>
-  `;async function s(){try{c(await r(`/orders/${o}`))}catch{document.getElementById(`tracking-content`).innerHTML=`
+  `;async function c(){try{l(await i(`/orders/${s}`))}catch{document.getElementById(`tracking-content`).innerHTML=`
       <div style="text-align:center;padding:4rem;">
         <div style="font-size:3rem;margin-bottom:1rem;">😕</div>
         <h2 style="font-family:var(--font-display);letter-spacing:2px;margin-bottom:0.5rem;">Order Not Found</h2>
         <p style="color:var(--text-muted);margin-bottom:2rem;">We couldn't find this order.</p>
-        <a href="/dashboard.html" class="btn btn-gold">View My Orders</a>
+        <a href="/dashboard" class="btn btn-gold">View My Orders</a>
       </div>
-    `}}function c(t){document.getElementById(`tracking-subtitle`).textContent=`Order #${t.orderNumber}`,document.title=`Order #${t.orderNumber} | Jagannath Enterprises`;let n=[`Placed`,`Confirmed`,`Shipped`,`Out for Delivery`,`Delivered`],r=n.indexOf(t.orderStatus),i=t.orderStatus===`Cancelled`,o=t.orderStatus.replace(/ /g,``);document.getElementById(`tracking-content`).innerHTML=`
+    `}}function l(t){document.getElementById(`tracking-subtitle`).textContent=`Order #${t.orderNumber}`,document.title=`Order #${t.orderNumber} | Jagannath Enterprises`;let n=[`Placed`,`Confirmed`,`Shipped`,`Out for Delivery`,`Delivered`],r=n.indexOf(t.orderStatus),i=t.orderStatus===`Cancelled`,s=t.orderStatus.replace(/ /g,``);document.getElementById(`tracking-content`).innerHTML=`
     <div class="tracking-card">
       <div class="order-info-grid">
         <div class="order-info-item">
@@ -21,11 +21,11 @@ import{a as e,c as t,d as n,n as r,p as i,r as a}from"./utils-DvWvbBi4.js";/* em
         </div>
         <div class="order-info-item">
           <div class="order-info-label">Order Date</div>
-          <div class="order-info-value">${a(t.createdAt)}</div>
+          <div class="order-info-value">${o(t.createdAt)}</div>
         </div>
         <div class="order-info-item">
           <div class="order-info-label">Status</div>
-          <div class="order-info-value"><span class="status-badge status-${o}">${t.orderStatus}</span></div>
+          <div class="order-info-value"><span class="status-badge status-${s}">${t.orderStatus}</span></div>
         </div>
         <div class="order-info-item">
           <div class="order-info-label">Total Amount</div>
@@ -52,16 +52,16 @@ import{a as e,c as t,d as n,n as r,p as i,r as a}from"./utils-DvWvbBi4.js";/* em
               <div class="timeline-dot">${e.status===`Cancelled`?`✕`:`✓`}</div>
               <div class="timeline-status">${e.status}</div>
               <div class="timeline-msg">${e.message||``}</div>
-              <div class="timeline-time">${a(e.timestamp)}</div>
+              <div class="timeline-time">${o(e.timestamp)}</div>
             </div>
           `).join(``)}
         `:`
-          ${n.map((e,n)=>{let i=t.trackingHistory?.find(t=>t.status===e),o=n<r,s=n===r,c=n>r;return`
-              <div class="timeline-item ${o?`completed`:``} ${s?`current`:``}">
-                <div class="timeline-dot">${o?`✓`:s?`●`:``}</div>
+          ${n.map((e,n)=>{let i=t.trackingHistory?.find(t=>t.status===e),a=n<r,s=n===r,c=n>r;return`
+              <div class="timeline-item ${a?`completed`:``} ${s?`current`:``}">
+                <div class="timeline-dot">${a?`✓`:s?`●`:``}</div>
                 <div class="timeline-status" style="${c?`color:var(--text-dim);`:``}">${e}</div>
                 <div class="timeline-msg">${i?i.message:c?`Pending`:``}</div>
-                ${i?`<div class="timeline-time">${a(i.timestamp)}</div>`:``}
+                ${i?`<div class="timeline-time">${o(i.timestamp)}</div>`:``}
               </div>
             `}).join(``)}
         `}
@@ -93,7 +93,7 @@ import{a as e,c as t,d as n,n as r,p as i,r as a}from"./utils-DvWvbBi4.js";/* em
         <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;margin-bottom:0.75rem;">Items Ordered</div>
         ${(t.items||[]).map(t=>`
           <div class="order-item-row">
-            <div class="order-item-thumb">${t.image?`<img src="${t.image}" alt="${t.productName||`Ordered item`}">`:`🪑`}</div>
+            <div class="order-item-thumb">${t.image?`<img src="${t.image}" alt="${a(t.productName,t.category)}">`:`🪑`}</div>
             <div style="flex:1;">
               <div style="font-weight:700;font-size:0.88rem;">${t.productName}</div>
               <div style="font-size:0.75rem;color:var(--text-muted);">${t.category||``} | Qty: ${t.qty}</div>
@@ -137,4 +137,4 @@ import{a as e,c as t,d as n,n as r,p as i,r as a}from"./utils-DvWvbBi4.js";/* em
         </div>
       `:``}
     </div>
-  `}var l=5;window.selectStar=function(e){l=e,document.querySelectorAll(`#star-select span`).forEach((t,n)=>{t.classList.toggle(`filled`,n<e)})},setTimeout(()=>window.selectStar?.(5),100),window.submitReview=async function(){let e=document.getElementById(`review-product`)?.value,t=document.getElementById(`review-title`)?.value,i=document.getElementById(`review-comment`)?.value;if(!e){n(`Select a product`,`warning`);return}try{await r(`/reviews`,{method:`POST`,body:JSON.stringify({product:e,rating:l,title:t,comment:i})}),n(`Review submitted! Thank you!`,`success`),document.getElementById(`review-form`).innerHTML=`<p style="color:#22c55e;font-weight:700;padding:1rem;">✓ Review submitted successfully!</p>`}catch(e){n(e.message||`Failed to submit review`,`error`)}};
+  `}var u=5;window.selectStar=function(e){u=e,document.querySelectorAll(`#star-select span`).forEach((t,n)=>{t.classList.toggle(`filled`,n<e)})},setTimeout(()=>window.selectStar?.(5),100),window.submitReview=async function(){let e=document.getElementById(`review-product`)?.value,n=document.getElementById(`review-title`)?.value,r=document.getElementById(`review-comment`)?.value;if(!e){t(`Select a product`,`warning`);return}try{await i(`/reviews`,{method:`POST`,body:JSON.stringify({product:e,rating:u,title:n,comment:r})}),t(`Review submitted! Thank you!`,`success`),document.getElementById(`review-form`).innerHTML=`<p style="color:#22c55e;font-weight:700;padding:1rem;">✓ Review submitted successfully!</p>`}catch(e){t(e.message||`Failed to submit review`,`error`)}};

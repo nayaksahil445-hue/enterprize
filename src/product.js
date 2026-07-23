@@ -1,5 +1,5 @@
 import './pwa-setup.js';
-import { apiRequest, formatPrice, showToast, updateNavbarAuth, isLoggedIn, starRating, getUser } from './utils.js';
+import { apiRequest, formatPrice, showToast, updateNavbarAuth, isLoggedIn, starRating, getUser, getProductAltText } from './utils.js';
 import './style.css';
 
 const API_URL = 'http://localhost:5000/api';
@@ -45,11 +45,11 @@ function showError() {
 }
 
 function renderProduct(p) {
-  document.title = `${p.name} | Jagannath Enterprises`;
+  document.title = `${p.name} - Steel Almirah & Cupboards | Jagannath Enterprises`;
   
   // Dynamic SEO meta updates
   const inStock = p.stock > 0;
-  const descText = p.description || `Buy ${p.name} at Jagannath Enterprises. Premium quality ${p.category} industrial furniture with 5-year warranty.`;
+  const descText = p.description || `Buy ${p.name} at Jagannath Enterprises — top industrial steel cupboard manufacturer & office almirah manufacturer in New Delhi & Odisha. Premium 2 door / 3 door steel almirah with locker at best steel almirah price.`;
   
   const descMeta = document.querySelector('meta[name="description"]');
   if (descMeta) descMeta.setAttribute('content', descText);
@@ -142,7 +142,7 @@ function renderProduct(p) {
           ${!inStock ? `<span class="pd-badge pd-badge-oos">Out of Stock</span>` : ''}
         </div>
         ${p.image
-          ? `<img src="${p.image}" alt="${p.name}" class="pd-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          ? `<img src="${p.image}" alt="${getProductAltText(p.name, p.category)}" class="pd-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
           : ''}
         <div class="product-thumb-placeholder" style="${p.image ? 'display:none;' : ''}width:100%;height:100%;">🪑</div>
       </div>
@@ -394,10 +394,10 @@ async function loadRecommendations() {
     }
 
     grid.innerHTML = filtered.map(p => `
-      <article class="product-card" onclick="window.location.href='/product.html?id=${p._id}'" style="cursor:pointer;">
+      <article class="product-card" onclick="window.location.href='/product?id=${p._id}'" style="cursor:pointer;">
         <div class="product-thumb-wrap">
           ${p.image
-            ? `<img src="${p.image}" alt="${p.name}" class="product-thumb" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            ? `<img src="${p.image}" alt="${getProductAltText(p.name, p.category)}" class="product-thumb" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                <div class="product-thumb-placeholder" style="display:none">🪑</div>`
             : `<div class="product-thumb-placeholder">🪑</div>`}
           <div class="product-badge">${p.category}</div>

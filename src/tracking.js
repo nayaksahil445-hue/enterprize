@@ -1,7 +1,7 @@
 import './pwa-setup.js';
-import { apiRequest, formatPrice, formatDate, showToast, updateNavbarAuth, isLoggedIn, starRating } from './utils.js';
+import { apiRequest, formatPrice, formatDate, showToast, updateNavbarAuth, isLoggedIn, starRating, getProductAltText } from './utils.js';
 
-if (!isLoggedIn()) { window.location.href = '/auth.html'; }
+if (!isLoggedIn()) { window.location.href = '/auth'; }
 updateNavbarAuth();
 
 const params = new URLSearchParams(window.location.search);
@@ -13,7 +13,7 @@ if (!orderId) {
       <div style="font-size:3rem;margin-bottom:1rem;">🔍</div>
       <h2 style="font-family:var(--font-display);letter-spacing:2px;margin-bottom:0.5rem;">No Order ID</h2>
       <p style="color:var(--text-muted);margin-bottom:2rem;">Please access this page from your orders dashboard.</p>
-      <a href="/dashboard.html" class="btn btn-gold">View My Orders</a>
+      <a href="/dashboard" class="btn btn-gold">View My Orders</a>
     </div>
   `;
 } else {
@@ -30,7 +30,7 @@ async function loadOrder() {
         <div style="font-size:3rem;margin-bottom:1rem;">😕</div>
         <h2 style="font-family:var(--font-display);letter-spacing:2px;margin-bottom:0.5rem;">Order Not Found</h2>
         <p style="color:var(--text-muted);margin-bottom:2rem;">We couldn't find this order.</p>
-        <a href="/dashboard.html" class="btn btn-gold">View My Orders</a>
+        <a href="/dashboard" class="btn btn-gold">View My Orders</a>
       </div>
     `;
   }
@@ -133,7 +133,7 @@ function renderOrder(order) {
         <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;margin-bottom:0.75rem;">Items Ordered</div>
         ${(order.items || []).map(i => `
           <div class="order-item-row">
-            <div class="order-item-thumb">${i.image ? `<img src="${i.image}" alt="${i.productName || 'Ordered item'}">` : '🪑'}</div>
+            <div class="order-item-thumb">${i.image ? `<img src="${i.image}" alt="${getProductAltText(i.productName, i.category)}">` : '🪑'}</div>
             <div style="flex:1;">
               <div style="font-weight:700;font-size:0.88rem;">${i.productName}</div>
               <div style="font-size:0.75rem;color:var(--text-muted);">${i.category || ''} | Qty: ${i.qty}</div>

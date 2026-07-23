@@ -1,4 +1,4 @@
-import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-DvWvbBi4.js";/* empty css              */t()||(window.location.href=`/auth.html`);var c=a();o(),document.getElementById(`dash-avatar`).textContent=(c?.name||`U`)[0].toUpperCase(),document.getElementById(`dash-name`).textContent=`Welcome, ${c?.name||`User`}`,document.getElementById(`dash-email`).textContent=c?.email||``,document.querySelectorAll(`.dash-tab`).forEach(e=>{e.addEventListener(`click`,()=>{document.querySelectorAll(`.dash-tab`).forEach(e=>e.classList.remove(`active`)),document.querySelectorAll(`.dash-pane`).forEach(e=>e.classList.remove(`active`)),e.classList.add(`active`),document.getElementById(`pane-${e.dataset.pane}`).classList.add(`active`)})});var l=window.location.hash.replace(`#`,``);if(l){let e=document.querySelector(`.dash-tab[data-pane="${l}"]`);e&&e.click()}async function u(){try{let t=await i(`/orders/my`),n=document.getElementById(`orders-content`);if(!t||!t.length){n.innerHTML=`
+import{a as e,f as t,i as n,l as r,m as i,n as a,o,r as s,s as c}from"./utils-iyttRNOh.js";/* empty css              */import"./pwa-setup-DtGWAku0.js";r()||(window.location.href=`/auth`);var l=c();i(),document.getElementById(`dash-avatar`).textContent=(l?.name||`U`)[0].toUpperCase(),document.getElementById(`dash-name`).textContent=`Welcome, ${l?.name||`User`}`,document.getElementById(`dash-email`).textContent=l?.email||``,document.querySelectorAll(`.dash-tab`).forEach(e=>{e.addEventListener(`click`,()=>{document.querySelectorAll(`.dash-tab`).forEach(e=>e.classList.remove(`active`)),document.querySelectorAll(`.dash-pane`).forEach(e=>e.classList.remove(`active`)),e.classList.add(`active`),document.getElementById(`pane-${e.dataset.pane}`).classList.add(`active`)})});var u=window.location.hash.replace(`#`,``);if(u){let e=document.querySelector(`.dash-tab[data-pane="${u}"]`);e&&e.click()}async function d(){try{let t=await a(`/orders/my`),n=document.getElementById(`orders-content`);if(!t||!t.length){n.innerHTML=`
         <div class="empty-state">
           <div class="empty-icon">📭</div>
           <h3 style="font-family:var(--font-display);font-size:1.5rem;letter-spacing:2px;margin-bottom:0.5rem;">No Orders Yet</h3>
@@ -25,11 +25,11 @@ import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-DvWv
           <div class="order-card-footer">
             <div class="order-total">${e(t.totalAmount)}</div>
             <div style="display:flex;gap:0.75rem;">
-              <a href="/tracking.html?id=${t._id}" class="track-btn">Track Order →</a>
+              <a href="/tracking?id=${t._id}" class="track-btn">Track Order →</a>
             </div>
           </div>
         </div>
-      `}).join(``)}catch{document.getElementById(`orders-content`).innerHTML=`<p style="color:var(--text-dim);padding:2rem;">Failed to load orders. Is the server running?</p>`}}async function d(){try{let e=await i(`/auth/profile`);document.getElementById(`profile-content`).innerHTML=`
+      `}).join(``)}catch{document.getElementById(`orders-content`).innerHTML=`<p style="color:var(--text-dim);padding:2rem;">Failed to load orders. Is the server running?</p>`}}async function f(){try{let e=await a(`/auth/profile`);document.getElementById(`profile-content`).innerHTML=`
       <div class="dash-card" style="max-width:550px;">
         <div style="font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;margin-bottom:1.5rem;">Edit Profile</div>
         <form class="profile-form" id="profile-form">
@@ -49,12 +49,12 @@ import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-DvWv
         </form>
         <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border-subtle);">
           <div style="font-size:0.78rem;color:var(--text-dim);">
-            Account created: ${r(e.createdAt)}<br>
+            Account created: ${n(e.createdAt)}<br>
             Role: <span style="color:var(--gold);font-weight:600;">${e.role}</span>
           </div>
         </div>
       </div>
-    `,document.getElementById(`profile-form`).addEventListener(`submit`,async e=>{e.preventDefault();try{await i(`/auth/profile`,{method:`PUT`,body:JSON.stringify({name:document.getElementById(`pf-name`).value,phone:document.getElementById(`pf-phone`).value})}),n(`Profile updated!`,`success`);let e=a();e.name=document.getElementById(`pf-name`).value,e.phone=document.getElementById(`pf-phone`).value,localStorage.setItem(`je_user`,JSON.stringify(e)),o()}catch(e){n(e.message||`Update failed`,`error`)}})}catch{document.getElementById(`profile-content`).innerHTML=`<p style="color:var(--text-dim);">Failed to load profile.</p>`}}async function f(){try{let e=(await i(`/auth/profile`)).addresses||[],t=document.getElementById(`addresses-content`);t.innerHTML=`
+    `,document.getElementById(`profile-form`).addEventListener(`submit`,async e=>{e.preventDefault();try{await a(`/auth/profile`,{method:`PUT`,body:JSON.stringify({name:document.getElementById(`pf-name`).value,phone:document.getElementById(`pf-phone`).value})}),t(`Profile updated!`,`success`);let e=c();e.name=document.getElementById(`pf-name`).value,e.phone=document.getElementById(`pf-phone`).value,localStorage.setItem(`je_user`,JSON.stringify(e)),i()}catch(e){t(e.message||`Update failed`,`error`)}})}catch{document.getElementById(`profile-content`).innerHTML=`<p style="color:var(--text-dim);">Failed to load profile.</p>`}}async function p(){try{let e=(await a(`/auth/profile`)).addresses||[],n=document.getElementById(`addresses-content`);n.innerHTML=`
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:2rem;">
         ${e.map(e=>`
           <div class="address-card ${e.isDefault?`default`:``}">
@@ -91,7 +91,7 @@ import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-DvWv
           <button type="submit" class="btn btn-gold">Add Address</button>
         </form>
       </div>
-    `,document.getElementById(`add-address-form`).addEventListener(`submit`,async e=>{e.preventDefault();try{await i(`/auth/address`,{method:`POST`,body:JSON.stringify({fullName:document.getElementById(`new-addr-name`).value,phone:document.getElementById(`new-addr-phone`).value,street:document.getElementById(`new-addr-street`).value,city:document.getElementById(`new-addr-city`).value,state:document.getElementById(`new-addr-state`).value,pincode:document.getElementById(`new-addr-pincode`).value,label:document.getElementById(`new-addr-label`).value||`Home`,isDefault:document.getElementById(`new-addr-default`).checked})}),n(`Address added!`,`success`),f()}catch(e){n(e.message||`Failed to add address`,`error`)}}),window.deleteAddress=async function(e){if(confirm(`Remove this address?`))try{await i(`/auth/address/${e}`,{method:`DELETE`}),n(`Address removed`,`info`),f()}catch{n(`Failed to remove`,`error`)}}}catch{document.getElementById(`addresses-content`).innerHTML=`<p style="color:var(--text-dim);">Failed to load addresses.</p>`}}async function p(){try{let t=(await i(`/auth/profile`)).wishlist||[],r=document.getElementById(`wishlist-content`);if(!t.length){r.innerHTML=`
+    `,document.getElementById(`add-address-form`).addEventListener(`submit`,async e=>{e.preventDefault();try{await a(`/auth/address`,{method:`POST`,body:JSON.stringify({fullName:document.getElementById(`new-addr-name`).value,phone:document.getElementById(`new-addr-phone`).value,street:document.getElementById(`new-addr-street`).value,city:document.getElementById(`new-addr-city`).value,state:document.getElementById(`new-addr-state`).value,pincode:document.getElementById(`new-addr-pincode`).value,label:document.getElementById(`new-addr-label`).value||`Home`,isDefault:document.getElementById(`new-addr-default`).checked})}),t(`Address added!`,`success`),p()}catch(e){t(e.message||`Failed to add address`,`error`)}}),window.deleteAddress=async function(e){if(confirm(`Remove this address?`))try{await a(`/auth/address/${e}`,{method:`DELETE`}),t(`Address removed`,`info`),p()}catch{t(`Failed to remove`,`error`)}}}catch{document.getElementById(`addresses-content`).innerHTML=`<p style="color:var(--text-dim);">Failed to load addresses.</p>`}}async function m(){try{let n=(await a(`/auth/profile`)).wishlist||[],r=document.getElementById(`wishlist-content`);if(!n.length){r.innerHTML=`
         <div class="empty-state">
           <div class="empty-icon">❤️</div>
           <h3 style="font-family:var(--font-display);font-size:1.5rem;letter-spacing:2px;margin-bottom:0.5rem;">Wishlist Empty</h3>
@@ -100,10 +100,10 @@ import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-DvWv
         </div>
       `;return}r.innerHTML=`
       <div class="wishlist-grid">
-        ${t.map(t=>`
-          <div class="dash-card" style="padding:0;overflow:hidden;cursor:pointer;" onclick="window.location.href='/product.html?id=${t._id}'">
+        ${n.map(t=>`
+          <div class="dash-card" style="padding:0;overflow:hidden;cursor:pointer;" onclick="window.location.href='/product?id=${t._id}'">
             <div style="height:180px;background:var(--dark-4);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-              ${t.image?`<img src="${t.image}" alt="${t.name}" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='<div style=font-size:3rem>🪑</div>'">`:`<div style="font-size:3rem;">🪑</div>`}
+              ${t.image?`<img src="${t.image}" alt="${o(t.name,t.category)}" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='<div style=font-size:3rem>🪑</div>'">`:`<div style="font-size:3rem;">🪑</div>`}
             </div>
             <div style="padding:1.25rem;">
               <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:var(--font-head);font-weight:700;">${t.category}</div>
@@ -116,4 +116,4 @@ import{a as e,c as t,d as n,i as r,n as i,o as a,p as o,r as s}from"./utils-DvWv
           </div>
         `).join(``)}
       </div>
-    `,window.removeWishlist=async function(e){try{await i(`/auth/wishlist/${e}`,{method:`POST`}),n(`Removed from wishlist`,`info`),p()}catch{n(`Failed`,`error`)}}}catch{document.getElementById(`wishlist-content`).innerHTML=`<p style="color:var(--text-dim);">Failed to load wishlist.</p>`}}u(),d(),f(),p();
+    `,window.removeWishlist=async function(e){try{await a(`/auth/wishlist/${e}`,{method:`POST`}),t(`Removed from wishlist`,`info`),m()}catch{t(`Failed`,`error`)}}}catch{document.getElementById(`wishlist-content`).innerHTML=`<p style="color:var(--text-dim);">Failed to load wishlist.</p>`}}d(),f(),p(),m();

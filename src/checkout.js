@@ -1,11 +1,11 @@
 import './pwa-setup.js';
-import { apiRequest, formatPrice, showToast, updateNavbarAuth, isLoggedIn, getUser } from './utils.js';
+import { apiRequest, formatPrice, showToast, updateNavbarAuth, isLoggedIn, getUser, getProductAltText } from './utils.js';
 
 const API_URL = 'http://localhost:5000/api';
 
 // Redirect if not logged in
 if (!isLoggedIn()) {
-  window.location.href = '/auth.html';
+  window.location.href = '/auth';
 }
 
 updateNavbarAuth();
@@ -66,7 +66,7 @@ function renderCartReview() {
     return `
       <div style="display:flex;gap:1rem;align-items:center;padding:1rem;background:var(--dark-4);border-radius:8px;margin-bottom:0.75rem;border:1px solid var(--border-subtle);">
         <div style="width:70px;height:70px;background:var(--dark-2);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
-          ${p.image ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;" onerror="this.outerHTML='🪑'">` : '🪑'}
+          ${p.image ? `<img src="${p.image}" alt="${getProductAltText(p.name, p.category)}" style="width:100%;height:100%;object-fit:contain;" onerror="this.outerHTML='🪑'">` : '🪑'}
         </div>
         <div style="flex:1;">
           <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.2rem;">${p.name}</div>
@@ -116,7 +116,7 @@ function updateSummary() {
 
   document.getElementById('summary-items').innerHTML = items.map(i => `
     <div class="summary-product">
-      <div class="summary-thumb">${i.product.image ? `<img src="${i.product.image}" alt="${i.product.name}">` : '🪑'}</div>
+      <div class="summary-thumb">${i.product.image ? `<img src="${i.product.image}" alt="${getProductAltText(i.product.name, i.product.category)}">` : '🪑'}</div>
       <div><div class="summary-pname">${i.product.name}</div><div class="summary-pdetail">${formatPrice(i.product.price)} × ${i.qty}</div></div>
     </div>
   `).join('');

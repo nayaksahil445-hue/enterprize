@@ -1,7 +1,6 @@
 const CACHE_NAME = 'jagannath-ent-cache-v1';
 const STATIC_ASSETS = [
   '/',
-  '/index.html',
   '/favicon.svg',
   '/manifest.json'
 ];

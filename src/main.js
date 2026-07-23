@@ -1,6 +1,5 @@
 import './style.css';
-import './pwa-setup.js';
-import { API_URL, updateNavbarAuth, isLoggedIn, apiRequest, showToast, formatPrice, starRating, getUser } from './utils.js';
+import { API_URL, updateNavbarAuth, isLoggedIn, apiRequest, showToast, formatPrice, starRating, getUser, getProductAltText } from './utils.js';
 
 /* ============================================================
    JAGANNATH ENTERPRISES — MAIN APPLICATION LOGIC
@@ -8,12 +7,12 @@ import { API_URL, updateNavbarAuth, isLoggedIn, apiRequest, showToast, formatPri
 
 // --------------- PRODUCT DATA (STATIC FALLBACK) ---------------
 const STATIC_PRODUCTS = [
-  { _id: 'p1', name: 'Steel-Frame Premium Cupboard', category: 'Storage', price: 12999, image: '/images/cupboard.png', description: 'Heavy-duty industrial cupboard with reinforced steel frame.', stock: 45, rating: 4.5, numReviews: 12 },
-  { _id: 'p2', name: 'Executive Loft Dressing Table', category: 'Luxury', price: 8500, image: '/images/dressing_table.png', description: 'Premium dressing table with integrated LED mirror.', stock: 30, rating: 4.7, numReviews: 8 },
-  { _id: 'p3', name: 'Registry Iron Cabinet', category: 'Office', price: 11000, image: '/images/cabinet.png', description: 'Secure fire-resistant iron cabinet with key lock system.', stock: 25, rating: 4.3, numReviews: 15 },
-  { _id: 'p4', name: 'Industrial Shelf Back Unit', category: 'Shelving', price: 4500, image: '/images/shelves.png', description: 'Open-back multi-tier shelving unit.', stock: 60, rating: 4.6, numReviews: 20 },
-  { _id: 'p5', name: 'Brass Tag Chest of Drawers', category: 'Vintage', price: 9800, image: '/images/chest.png', description: 'Vintage-style metal chest with antique brass tag holders.', stock: 18, rating: 4.8, numReviews: 6 },
-  { _id: 'p6', name: 'Modular Steel Cabinet Set', category: 'Office', price: 21000, image: '/images/cabinet.png', description: 'Enterprise-grade modular cabinet system.', stock: 12, rating: 4.4, numReviews: 10 },
+  { _id: 'p1', name: 'Steel Almirah with Locker (2 Door / 3 Door)', category: 'Storage', price: 12999, image: '/images/cupboard.webp', description: 'Heavy-duty industrial steel almirah with locker, 2 door & 3 door options. Premier steel wardrobe online India at direct steel almirah price.', stock: 45, rating: 4.5, numReviews: 12 },
+  { _id: 'p2', name: 'Executive Loft Dressing Table', category: 'Luxury', price: 8500, image: '/images/dressing_table.webp', description: 'Premium steel dressing table with integrated LED mirror by top steel cupboard manufacturer.', stock: 30, rating: 4.7, numReviews: 8 },
+  { _id: 'p3', name: 'Registry Office Steel Almirah Cabinet', category: 'Office', price: 11000, image: '/images/cabinet.webp', description: 'Secure fire-resistant office almirah manufacturer grade steel cabinet with heavy key lock.', stock: 25, rating: 4.3, numReviews: 15 },
+  { _id: 'p4', name: 'Industrial Steel Shelf Unit', category: 'Shelving', price: 4500, image: '/images/shelves.webp', description: 'Open-back multi-tier industrial steel cupboard shelving unit built for enterprise storage in New Delhi & Odisha.', stock: 60, rating: 4.6, numReviews: 20 },
+  { _id: 'p5', name: 'Brass Tag 4 Door Steel Almirah Chest', category: 'Vintage', price: 9800, image: '/images/chest.webp', description: 'Vintage-style 4 door steel almirah chest of drawers with antique brass tag holders.', stock: 18, rating: 4.8, numReviews: 6 },
+  { _id: 'p6', name: 'Modular Steel Almirah & Cabinet Set', category: 'Office', price: 21000, image: '/images/cabinet.webp', description: 'Enterprise-grade modular steel almirah & cabinet system by top industrial steel cupboard manufacturer.', stock: 12, rating: 4.4, numReviews: 10 },
 ];
 
 /* ===============================================================
@@ -140,13 +139,13 @@ function renderProducts(products) {
       ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
 
     const imgHtml = p.image
-      ? `<img src="${p.image}" alt="${p.name}" class="product-thumb" loading="lazy"
+      ? `<img src="${p.image}" alt="${getProductAltText(p.name, p.category)}" class="product-thumb" loading="lazy"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
          <div class="product-thumb-placeholder" style="display:none">🪑</div>`
       : `<div class="product-thumb-placeholder">🪑</div>`;
 
     return `
-      <article class="product-card reveal" data-id="${p._id}" onclick="window.location.href='/product.html?id=${p._id}'" style="cursor:pointer;">
+      <article class="product-card reveal" data-id="${p._id}" onclick="window.location.href='/product?id=${p._id}'" style="cursor:pointer;">
         <div class="product-thumb-wrap">
           ${imgHtml}
           <div class="product-badge">${p.category}</div>
@@ -461,10 +460,10 @@ document.getElementById('checkout-btn')?.addEventListener('click', () => {
   }
   if (!isLoggedIn()) {
     showToast('Please login to checkout', 'warning');
-    setTimeout(() => window.location.href = '/auth.html', 1000);
+    setTimeout(() => window.location.href = '/auth', 1000);
     return;
   }
-  window.location.href = '/checkout.html';
+  window.location.href = '/checkout';
 });
 
 /* ===============================================================
@@ -491,10 +490,10 @@ async function loadRecommendations() {
     recSection.style.display = 'block';
     const grid = recSection.querySelector('.products-grid');
     grid.innerHTML = products.slice(0, 4).map(p => `
-      <article class="product-card reveal" onclick="window.location.href='/product.html?id=${p._id}'" style="cursor:pointer;">
+      <article class="product-card reveal" onclick="window.location.href='/product?id=${p._id}'" style="cursor:pointer;">
         <div class="product-thumb-wrap">
           ${p.image
-        ? `<img src="${p.image}" alt="${p.name}" class="product-thumb" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        ? `<img src="${p.image}" alt="${getProductAltText(p.name, p.category)}" class="product-thumb" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                <div class="product-thumb-placeholder" style="display:none">🪑</div>`
         : `<div class="product-thumb-placeholder">🪑</div>`}
           <div class="product-badge">${p.category}</div>
@@ -572,7 +571,7 @@ if (closeCartBtn) closeCartBtn.addEventListener('click', () => toggleCart(false)
 if (cartOverlay) cartOverlay.addEventListener('click', () => toggleCart(false));
 
 const checkoutBtn = document.getElementById('checkout-btn');
-if (checkoutBtn) checkoutBtn.addEventListener('click', () => window.location.href = '/checkout.html');
+if (checkoutBtn) checkoutBtn.addEventListener('click', () => window.location.href = '/checkout');
 
 /* ===============================================================
    SCROLL TO TOP
