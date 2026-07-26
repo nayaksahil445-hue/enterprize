@@ -3,8 +3,22 @@
    ============================================================ */
 import './chatbot.js';
 
-const isLocalhost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-export const API_URL = import.meta.env.VITE_API_URL || (isLocalhost ? 'http://localhost:5000/api' : 'https://jaganath-backend.onrender.com/api');
+function getApiUrl() {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return 'http://localhost:5000/api';
+    }
+    // If testing on phone via local Wi-Fi IP (e.g., 192.168.X.X)
+    if (/^192\.168\.|^10\.|^172\.(1[6-9]|2[0-9]|3[01])\./.test(host)) {
+      return `http://${host}:5000/api`;
+    }
+  }
+  return 'https://jaganath-backend.onrender.com/api';
+}
+
+export const API_URL = getApiUrl();
 
 // ─── Auth Helpers ───
 export function getToken() {
