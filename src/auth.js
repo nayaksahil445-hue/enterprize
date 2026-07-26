@@ -202,7 +202,7 @@ async function handleSendOtp(email) {
 
     return true;
   } catch (err) {
-    showMsg('forgot-msg', 'Server waking up or unreachable. Please wait 10s & tap Send again.');
+    showMsg('forgot-msg', 'Server not reachable. Check if backend is running.');
     btn.disabled = false;
     btn.textContent = 'Send OTP Code →';
     return false;
