@@ -48,9 +48,16 @@ export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
   console.log(`[OTP CODE]: ${otp}`);
   console.log(`==================================================\n`);
 
+  const isDevMode = process.env.NODE_ENV !== 'production';
+
   if (!host || !user || !pass) {
-    console.log('[SMTP INFO] SMTP credentials not provided in .env. OTP printed to server console for dev testing.');
-    return { success: true, simulated: true };
+    const errorMsg = '[SMTP ERROR] SMTP credentials are missing in server environment.';
+    console.error(errorMsg);
+    if (isDevMode) {
+      console.log('[SMTP INFO] SMTP credentials not provided in .env. OTP printed to server console for dev testing.');
+      return { success: true, simulated: true };
+    }
+    throw new Error('SMTP configuration is incomplete. Please set SMTP_HOST, SMTP_USER, and SMTP_PASS.');
   }
 
   try {
@@ -70,6 +77,8 @@ export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
           }
     );
 
+    await transporter.verify();
+
     await transporter.sendMail({
       from: fromEmail,
       to: email,
@@ -81,7 +90,6 @@ export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
     return { success: true, sent: true };
   } catch (error) {
     console.error('[SMTP ERROR] Failed to send email via SMTP:', error.message);
-    // Still return success with fallback so dev workflow is smooth
-    return { success: true, warning: 'SMTP delivery failed, but OTP logged to console' };
+    throw error;
   }
 };
