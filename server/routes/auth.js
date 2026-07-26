@@ -186,12 +186,23 @@ router.post('/forgot-password', async (req, res) => {
     user.resetPasswordOtp = otp;
     user.resetPasswordOtpExpires = otpExpiry;
 
-    const emailResult = await sendOtpEmail({
-      email: user.email,
-      name: user.name,
-      otp,
-      subject: 'Password Reset OTP - Jagannath Enterprises'
-    });
+    let emailResult;
+    try {
+      emailResult = await sendOtpEmail({
+        email: user.email,
+        name: user.name,
+        otp,
+        subject: 'Password Reset OTP - Jagannath Enterprises'
+      });
+    } catch (error) {
+      console.error('[AUTH ERROR] OTP email failed to send', error.message || error);
+      user.resetPasswordOtp = undefined;
+      user.resetPasswordOtpExpires = undefined;
+      await user.save();
+      return res.status(502).json({
+        message: error.message || 'Failed to send OTP email. Please check SMTP configuration.'
+      });
+    }
 
     if (!emailResult?.success) {
       console.error('[AUTH ERROR] OTP email failed to send', emailResult);
