@@ -61,19 +61,44 @@ export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
+    const createTransporter = ({ portNumber, secure }) => nodemailer.createTransport({
       host,
-      port: Number(port),
-      secure: Number(port) === 465,
+      port: portNumber,
+      secure,
       auth: { user, pass },
       requireTLS: true,
+      connectionTimeout: 20000,
+      greetingTimeout: 20000,
+      socketTimeout: 20000,
       tls: {
         rejectUnauthorized: false,
         ciphers: 'TLSv1.2'
       }
     });
 
-    await transporter.verify();
+    const transportOptions = [
+      { portNumber: Number(port), secure: Number(port) === 465 },
+      { portNumber: 465, secure: true }
+    ];
+
+    let transporter;
+    let lastError;
+
+    for (const opts of transportOptions) {
+      transporter = createTransporter(opts);
+      try {
+        await transporter.verify();
+        break;
+      } catch (err) {
+        lastError = err;
+        console.warn(`[SMTP WARN] Transport verify failed on port ${opts.portNumber}: ${err.message}`);
+        transporter = null;
+      }
+    }
+
+    if (!transporter) {
+      throw lastError || new Error('SMTP transport verification failed');
+    }
 
     await transporter.sendMail({
       from: fromEmail,
