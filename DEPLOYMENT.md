@@ -14,6 +14,11 @@ This guide explains how to deploy the Jaganath Enterprises furniture website to 
    - `MONGODB_URI`: Your MongoDB Atlas URL.
    - `JWT_SECRET`: A secure random string (e.g., `jagannath_secure_2026`).
    - `PORT`: `10000` (Render's default).
+   - `SMTP_HOST`: `smtp.gmail.com`
+   - `SMTP_PORT`: `587`
+   - `SMTP_USER`: `nayaksahil445@gmail.com`
+   - `SMTP_PASS`: `pjwwxskaublvbcva`
+   - `FROM_EMAIL`: `"Jagannath Enterprises" <nayaksahil445@gmail.com>`
 
 ## 2. Frontend Deployment (Vercel)
 1. **Create Vercel Project**: Sign up on [Vercel](https://vercel.com) and import your GitHub repo.
