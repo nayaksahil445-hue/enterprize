@@ -227,7 +227,7 @@
       .form-row { grid-template-columns: 1fr; }
     }
   </style>
-  <script type="module" crossorigin src="/assets/auth-lWAvpWZ_.js"></script>
+  <script type="module" crossorigin src="/assets/auth-z9eI56S1.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/utils-iyttRNOh.js">
   <link rel="modulepreload" crossorigin href="/assets/pwa-setup-DtGWAku0.js">
 </head>
@@ -257,7 +257,10 @@
       <input type="email" name="email" placeholder="you@company.com" required id="login-email" />
     </div>
     <div class="form-group">
-      <label for="login-password">Password</label>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <label for="login-password">Password</label>
+        <a href="#" id="link-forgot-pw" style="color: var(--gold); font-size: 0.75rem; text-decoration: none; font-family: var(--font-head); font-weight: 600;">Forgot Password?</a>
+      </div>
       <input type="password" name="password" placeholder="Enter your password" required id="login-password" />
     </div>
     <button type="submit" class="auth-submit" id="login-submit">Sign In →</button>
@@ -266,6 +269,53 @@
     <div class="demo-info">
       <strong>Admin:</strong> admin@jagannath.com / admin123<br/>
       <strong>User:</strong> demo@test.com / demo123
+    </div>
+  </form>
+
+  <!-- FORGOT PASSWORD STEP 1: REQUEST OTP -->
+  <form class="auth-form" id="forgot-form">
+    <div style="margin-bottom: 0.3rem;">
+      <h2 style="font-family: var(--font-head); font-size: 1.15rem; color: #fff; font-weight: 700; letter-spacing: 0.5px;">Reset Password</h2>
+      <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.3rem; line-height: 1.4;">Enter your registered email address to receive a 6-digit OTP code.</p>
+    </div>
+    <div class="form-group">
+      <label for="forgot-email">Email Address</label>
+      <input type="email" name="email" placeholder="you@company.com" required id="forgot-email" />
+    </div>
+    <button type="submit" class="auth-submit" id="forgot-submit">Send OTP Code →</button>
+    <div id="forgot-msg" class="auth-msg" style="display:none;"></div>
+    <div style="text-align: center; margin-top: 0.5rem;">
+      <a href="#" class="back-to-login" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none; font-family: var(--font-head); font-weight: 500;">← Back to Login</a>
+    </div>
+  </form>
+
+  <!-- FORGOT PASSWORD STEP 2: VERIFY OTP & RESET -->
+  <form class="auth-form" id="reset-form">
+    <div style="margin-bottom: 0.3rem;">
+      <h2 style="font-family: var(--font-head); font-size: 1.15rem; color: #fff; font-weight: 700; letter-spacing: 0.5px;">Verify OTP & Set Password</h2>
+      <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.3rem; line-height: 1.4;">Enter the 6-digit code sent to your email along with your new password.</p>
+    </div>
+    <div class="form-group">
+      <label for="reset-email">Email Address</label>
+      <input type="email" name="email" required id="reset-email" readonly style="opacity: 0.75; cursor: not-allowed; background: rgba(0,0,0,0.3);" />
+    </div>
+    <div class="form-group">
+      <label for="reset-otp">6-Digit OTP Code</label>
+      <input type="text" name="otp" placeholder="123456" required maxlength="6" pattern="[0-9]{6}" id="reset-otp" style="letter-spacing: 6px; font-weight: 700; text-align: center; font-size: 1.15rem; color: var(--gold);" />
+    </div>
+    <div class="form-group">
+      <label for="reset-new-password">New Password (min 6 chars)</label>
+      <input type="password" name="newPassword" placeholder="Enter new password" required minlength="6" id="reset-new-password" />
+    </div>
+    <div class="form-group">
+      <label for="reset-confirm-password">Confirm New Password</label>
+      <input type="password" name="confirmNewPassword" placeholder="Confirm new password" required id="reset-confirm-password" />
+    </div>
+    <button type="submit" class="auth-submit" id="reset-submit">Update Password →</button>
+    <div id="reset-msg" class="auth-msg" style="display:none;"></div>
+    <div style="text-align: center; margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+      <a href="#" id="resend-otp-btn" style="color: var(--gold); font-size: 0.78rem; text-decoration: none; font-family: var(--font-head); font-weight: 600;">Resend OTP</a>
+      <a href="#" class="back-to-login" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none; font-family: var(--font-head); font-weight: 500;">← Back to Login</a>
     </div>
   </form>
 

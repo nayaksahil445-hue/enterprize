@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../models/User.js';
 import { protect } from '../middleware/auth.js';
+import { sendOtpEmail } from '../utils/sendEmail.js';
 
 const router = express.Router();
 
@@ -162,6 +163,88 @@ router.post('/wishlist/:productId', protect, async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+});
+
+// POST /api/auth/forgot-password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: 'Email address is required' });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return res.status(404).json({ message: 'No account found with this email address' });
+    }
+
+    // Generate 6 digit numeric OTP code
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes valid
+
+    user.resetPasswordOtp = otp;
+    user.resetPasswordOtpExpires = otpExpiry;
+    await user.save();
+
+    await sendOtpEmail({
+      email: user.email,
+      name: user.name,
+      otp,
+      subject: 'Password Reset OTP - Jagannath Enterprises'
+    });
+
+    res.json({
+      message: 'OTP has been sent to your email address.',
+      email: user.email
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || 'Failed to process forgot password request' });
+  }
+});
+
+// POST /api/auth/reset-password
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ message: 'Email, OTP, and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() })
+      .select('+resetPasswordOtp +resetPasswordOtpExpires');
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid email or OTP request' });
+    }
+
+    if (!user.resetPasswordOtp || !user.resetPasswordOtpExpires) {
+      return res.status(400).json({ message: 'No active OTP request found. Please request a new OTP.' });
+    }
+
+    if (user.resetPasswordOtpExpires < new Date()) {
+      return res.status(400).json({ message: 'OTP code has expired. Please request a new OTP.' });
+    }
+
+    if (user.resetPasswordOtp !== otp.toString().trim()) {
+      return res.status(400).json({ message: 'Invalid OTP code. Please check and try again.' });
+    }
+
+    // Set new password and reset OTP fields
+    user.password = newPassword;
+    user.resetPasswordOtp = undefined;
+    user.resetPasswordOtpExpires = undefined;
+
+    await user.save();
+
+    res.json({ message: 'Password updated successfully! You can now log in with your new password.' });
+  } catch (err) {
+    res.status(500).json({ message: err.message || 'Failed to reset password' });
   }
 });
 

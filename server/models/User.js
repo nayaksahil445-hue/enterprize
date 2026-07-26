@@ -65,6 +65,14 @@ const userSchema = new mongoose.Schema({
     ref: 'Product'
   }],
   activityLog: [activitySchema],
+  resetPasswordOtp: {
+    type: String,
+    select: false
+  },
+  resetPasswordOtpExpires: {
+    type: Date,
+    select: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
