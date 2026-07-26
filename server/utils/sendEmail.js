@@ -61,21 +61,17 @@ export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
   }
 
   try {
-    const isGmail = host.includes('gmail');
-    const transporter = nodemailer.createTransport(
-      isGmail
-        ? {
-            service: 'gmail',
-            auth: { user, pass }
-          }
-        : {
-            host,
-            port: Number(port),
-            secure: Number(port) === 465,
-            auth: { user, pass },
-            tls: { rejectUnauthorized: false }
-          }
-    );
+    const transporter = nodemailer.createTransport({
+      host,
+      port: Number(port),
+      secure: Number(port) === 465,
+      auth: { user, pass },
+      requireTLS: true,
+      tls: {
+        rejectUnauthorized: false,
+        ciphers: 'TLSv1.2'
+      }
+    });
 
     await transporter.verify();
 
