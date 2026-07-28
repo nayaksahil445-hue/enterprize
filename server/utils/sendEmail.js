@@ -76,29 +76,13 @@ export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
       }
     });
 
-    const transportOptions = [
-      { portNumber: Number(port), secure: Number(port) === 465 },
-      { portNumber: 465, secure: true }
-    ];
+    const transportOptions = {
+      portNumber: Number(port),
+      secure: Number(port) === 465
+    };
 
-    let transporter;
-    let lastError;
-
-    for (const opts of transportOptions) {
-      transporter = createTransporter(opts);
-      try {
-        await transporter.verify();
-        break;
-      } catch (err) {
-        lastError = err;
-        console.warn(`[SMTP WARN] Transport verify failed on port ${opts.portNumber}: ${err.message}`);
-        transporter = null;
-      }
-    }
-
-    if (!transporter) {
-      throw lastError || new Error('SMTP transport verification failed');
-    }
+    const transporter = createTransporter(transportOptions);
+    await transporter.verify();
 
     await transporter.sendMail({
       from: fromEmail,
