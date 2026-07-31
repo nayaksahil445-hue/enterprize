@@ -21,15 +21,16 @@ This guide explains how to deploy the Jaganath Enterprises furniture website to 
    - `SMTP_USER`: Your Gmail address.
    - `SMTP_PASS`: Your Gmail App Password (16 characters), not your normal Gmail password.
    - `FROM_EMAIL`: `"Jagannath Enterprises" <your_gmail_address@gmail.com>`
+      - `ALLOWED_ORIGINS`: (optional) Comma-separated list of allowed frontend origins for CORS. Example:
+         `https://enterprize-sand.vercel.app,https://admin.yourdomain.com`
 
 ## 2. Frontend Deployment (Vercel)
 1. **Create Vercel Project**: Sign up on [Vercel](https://vercel.com) and import your GitHub repo.
 2. **Build Settings**:
-   - **Root Directory**: `.`
-   - **Framework Preset**: `Vite`
+   - **Root Directory**: `client`
+   - **Framework Preset**: `Next.js`
 3. **Environment Variables**:
-   - `VITE_API_URL`: The URL of your backend API, for example `https://your-render-backend.onrender.com/api`.
-   - If you prefer a different name, you can also use `VITE_PUBLIC_API_URL` or `VITE_APP_API_URL`.
+   - `NEXT_PUBLIC_API_URL`: The URL of your Render backend (e.g., `https://jaganath-api.onrender.com/api`).
 4. **Deploy**: Click "Deploy".
 
 ## 3. Post-Deployment Verification

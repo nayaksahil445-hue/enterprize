@@ -1,6 +1,8 @@
 import './pwa-setup.js';
-import { API_URL, apiRequest, formatPrice, showToast, updateNavbarAuth, isLoggedIn, starRating, getUser, getProductAltText } from './utils.js';
+import { apiRequest, formatPrice, showToast, updateNavbarAuth, isLoggedIn, starRating, getUser, getProductAltText } from './utils.js';
 import './style.css';
+
+const API_URL = 'http://localhost:5000/api';
 
 // Get product ID from URL
 const params = new URLSearchParams(window.location.search);

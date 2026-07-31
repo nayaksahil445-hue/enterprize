@@ -1,6 +1,8 @@
 import './pwa-setup.js';
 import { apiRequest, formatPrice, showToast, updateNavbarAuth, isLoggedIn, getUser, getProductAltText } from './utils.js';
 
+const API_URL = 'http://localhost:5000/api';
+
 // Redirect if not logged in
 if (!isLoggedIn()) {
   window.location.href = '/auth';

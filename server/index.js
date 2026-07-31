@@ -21,7 +21,31 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+// CORS: if ALLOWED_ORIGINS is set (comma-separated), enforce a whitelist.
+// Otherwise keep permissive behavior for backward compatibility.
+const allowedOriginsEnv = process.env.ALLOWED_ORIGINS || '';
+const allowedOrigins = allowedOriginsEnv
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
+
+if (allowedOrigins.length > 0) {
+  app.use(cors({
+    origin: (origin, callback) => {
+      // allow non-browser requests (no Origin) like curl/server-to-server
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+      return callback(new Error('CORS policy: This origin is not allowed'));
+    },
+    credentials: true
+  }));
+  console.log(`✅ CORS whitelist active — allowed origins: ${allowedOrigins.join(', ')}`);
+} else {
+  // No whitelist configured: allow all (original behavior)
+  app.use(cors());
+  console.log('⚠️  CORS: no ALLOWED_ORIGINS configured — allowing all origins (set ALLOWED_ORIGINS to restrict)');
+}
+
 app.use(express.json({ limit: '10mb' }));
 
 // MongoDB Connection
