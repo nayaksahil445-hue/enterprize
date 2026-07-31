@@ -16,9 +16,11 @@ This guide explains how to deploy the Jaganath Enterprises furniture website to 
    - `PORT`: `10000` (Render's default).
    - `SMTP_HOST`: `smtp.gmail.com`
    - `SMTP_PORT`: `587`
-   - `SMTP_USER`: `nayaksahil445@gmail.com`
-   - `SMTP_PASS`: `pjwwxskaublvbcva`
-   - `FROM_EMAIL`: `"Jagannath Enterprises" <nayaksahil445@gmail.com>`
+   - `SMTP_SECURE`: `false`
+   - `SMTP_REQUIRE_TLS`: `true`
+   - `SMTP_USER`: Your Gmail address.
+   - `SMTP_PASS`: Your Gmail App Password (16 characters), not your normal Gmail password.
+   - `FROM_EMAIL`: `"Jagannath Enterprises" <your_gmail_address@gmail.com>`
 
 ## 2. Frontend Deployment (Vercel)
 1. **Create Vercel Project**: Sign up on [Vercel](https://vercel.com) and import your GitHub repo.

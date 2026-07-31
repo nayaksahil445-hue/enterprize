@@ -1,5 +1,65 @@
 import nodemailer from 'nodemailer';
 
+const getBooleanEnv = (value, fallback = false) => {
+  if (typeof value === 'undefined' || value === null || value === '') return fallback;
+  if (typeof value === 'boolean') return value;
+
+  const normalized = String(value).trim().toLowerCase();
+  if (['1', 'true', 'yes', 'on'].includes(normalized)) return true;
+  if (['0', 'false', 'no', 'off'].includes(normalized)) return false;
+  return fallback;
+};
+
+const buildTransportOptions = ({ host, port, user, pass }) => {
+  const parsedPort = Number(port || 587);
+  const secure = getBooleanEnv(process.env.SMTP_SECURE, parsedPort === 465);
+  const requireTls = getBooleanEnv(process.env.SMTP_REQUIRE_TLS, true);
+  const rejectUnauthorized = getBooleanEnv(process.env.SMTP_REJECT_UNAUTHORIZED, false);
+
+  const baseConfig = {
+    auth: { user, pass },
+    authMethod: 'LOGIN',
+    requireTLS: requireTls,
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 30000,
+    tls: {
+      rejectUnauthorized,
+      minVersion: 'TLSv1.2'
+    },
+    family: 4
+  };
+
+  const options = [];
+
+  if (host) {
+    options.push({
+      ...baseConfig,
+      host,
+      port: parsedPort,
+      secure
+    });
+  }
+
+  options.push({
+    ...baseConfig,
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false
+  });
+
+  options.push({
+    ...baseConfig,
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true
+  });
+
+  return options;
+};
+
 /**
  * Send Email utility using Nodemailer
  * @param {Object} options
@@ -9,11 +69,11 @@ import nodemailer from 'nodemailer';
  * @param {string} [options.name] - Recipient name
  */
 export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
-  const host = process.env.SMTP_HOST;
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = process.env.SMTP_PORT || 587;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
-  const fromEmail = process.env.FROM_EMAIL || '"Jagannath Enterprises" <no-reply@jagannath.com>';
+  const fromEmail = process.env.FROM_EMAIL || (user ? `"Jagannath Enterprises" <${user}>` : '"Jagannath Enterprises" <no-reply@jagannath.com>');
 
   const htmlContent = `
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 550px; margin: 0 auto; background-color: #0b0b0b; color: #e8e8e8; border: 1px solid #333; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
@@ -50,51 +110,28 @@ export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
 
   const isDevMode = process.env.NODE_ENV !== 'production';
 
-  if (!host || !user || !pass) {
+  if (!user || !pass) {
     const errorMsg = '[SMTP ERROR] SMTP credentials are missing in server environment.';
     console.error(errorMsg);
     if (isDevMode) {
       console.log('[SMTP INFO] SMTP credentials not provided in .env. OTP printed to server console for dev testing.');
       return { success: true, simulated: true };
     }
-    throw new Error('SMTP configuration is incomplete. Please set SMTP_HOST, SMTP_USER, and SMTP_PASS.');
+    throw new Error('SMTP configuration is incomplete. Please set SMTP_HOST, SMTP_USER, and SMTP_PASS. If you are using Gmail, use a 16-character app password instead of your normal password.');
   }
 
   try {
-    const createTransporter = ({ portNumber, secure }) => nodemailer.createTransport({
-      service: 'gmail',
-      host,
-      port: portNumber,
-      secure,
-      auth: { user, pass },
-      authMethod: 'LOGIN',
-      requireTLS: true,
-      connectionTimeout: 20000,
-      greetingTimeout: 20000,
-      socketTimeout: 20000,
-      tls: {
-        rejectUnauthorized: false,
-        minVersion: 'TLSv1.2'
-      },
-      family: 4
-    });
-
-    const transportOptions = [
-      { portNumber: Number(port), secure: Number(port) === 465 },
-      { portNumber: 465, secure: true }
-    ];
-
     let transporter;
     let lastError;
 
-    for (const opts of transportOptions) {
-      transporter = createTransporter(opts);
+    for (const opts of buildTransportOptions({ host, port, user, pass })) {
+      transporter = nodemailer.createTransport(opts);
       try {
         await transporter.verify();
         break;
       } catch (err) {
         lastError = err;
-        console.warn(`[SMTP WARN] Transport verify failed on port ${opts.portNumber}: ${err.message}`);
+        console.warn(`[SMTP WARN] Transport verify failed for ${opts.host}:${opts.port} (${opts.secure ? 'SSL' : 'TLS'}): ${err.message}`);
         transporter = null;
       }
     }
@@ -115,6 +152,6 @@ export const sendOtpEmail = async ({ email, subject, otp, name = 'User' }) => {
     return { success: true, sent: true };
   } catch (error) {
     console.error('[SMTP ERROR] Failed to send email via SMTP:', error.message);
-    throw error;
+    throw new Error(`Failed to send OTP email: ${error.message}`);
   }
 };
