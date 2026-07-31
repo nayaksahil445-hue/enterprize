@@ -14,6 +14,7 @@ import paymentRoutes from './routes/payments.js';
 import adminRoutes from './routes/admin.js';
 import inventoryRoutes from './routes/inventory.js';
 import inquiryRoutes from './routes/inquiries.js';
+import debugRoutes from './routes/debug.js';
 
 dotenv.config();
 
@@ -65,6 +66,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/inquiries', inquiryRoutes);
+app.use('/api/debug', debugRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
