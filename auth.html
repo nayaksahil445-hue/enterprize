@@ -261,6 +261,9 @@
       <input type="password" name="password" placeholder="Enter your password" required id="login-password" />
     </div>
     <button type="submit" class="auth-submit" id="login-submit">Sign In →</button>
+    <div style="margin-top:0.75rem;">
+      <div id="google-signin-btn"></div>
+    </div>
     <div id="login-msg" class="auth-msg" style="display:none;"></div>
     <div class="auth-divider">Demo Accounts</div>
     <div class="demo-info">
@@ -348,5 +351,7 @@
 </main>
 
 <script type="module" src="/src/auth.js"></script>
+<!-- Google Identity Services: loaded by client when GOOGLE client id is present -->
+<script async defer src="https://accounts.google.com/gsi/client"></script>
 </body>
 </html>

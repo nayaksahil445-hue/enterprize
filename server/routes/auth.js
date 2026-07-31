@@ -2,8 +2,11 @@ import express from 'express';
 import User from '../models/User.js';
 import { protect } from '../middleware/auth.js';
 import { sendOtpEmail } from '../utils/sendEmail.js';
+import { OAuth2Client } from 'google-auth-library';
 
 const router = express.Router();
+
+const googleClient = process.env.GOOGLE_CLIENT_ID ? new OAuth2Client(process.env.GOOGLE_CLIENT_ID) : null;
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
@@ -222,6 +225,46 @@ router.post('/forgot-password', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ message: err.message || 'Failed to process forgot password request' });
+  }
+});
+
+// POST /api/auth/google  (Sign-in with Google ID token)
+router.post('/google', async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    if (!idToken) return res.status(400).json({ message: 'ID token is required' });
+    if (!googleClient) return res.status(500).json({ message: 'Google OAuth not configured on server' });
+
+    const ticket = await googleClient.verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID });
+    const payload = ticket.getPayload();
+    const email = (payload.email || '').toLowerCase();
+    if (!email) return res.status(400).json({ message: 'Google account email not available' });
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      // Create user with a random password (will be hashed by pre-save)
+      const rnd = Math.random().toString(36).slice(-12) + 'A1!';
+      user = await User.create({ name: payload.name || email.split('@')[0], email, password: rnd, avatar: payload.picture || '' });
+    }
+
+    const token = user.generateToken();
+    res.json({
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        avatar: user.avatar,
+        addresses: user.addresses,
+        wishlist: user.wishlist,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (err) {
+    console.error('[GOOGLE AUTH ERROR]', err);
+    res.status(500).json({ message: err.message || 'Google authentication failed' });
   }
 });
 

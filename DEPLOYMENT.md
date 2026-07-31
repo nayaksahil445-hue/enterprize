@@ -31,6 +31,8 @@ This guide explains how to deploy the Jaganath Enterprises furniture website to 
    - **Framework Preset**: `Next.js`
 3. **Environment Variables**:
    - `NEXT_PUBLIC_API_URL`: The URL of your Render backend (e.g., `https://jaganath-api.onrender.com/api`).
+   - `VITE_GOOGLE_CLIENT_ID`: (optional) Google OAuth Client ID for frontend Google Sign-In (used by the client to obtain ID tokens).
+   - On the backend (Render), set `GOOGLE_CLIENT_ID` to the same Google Client ID so the server can verify ID tokens.
 4. **Deploy**: Click "Deploy".
 
 ## 3. Post-Deployment Verification

@@ -111,6 +111,59 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   }
 });
 
+// ─── Google Sign-In Integration ───
+async function handleGoogleCredential(googleResponse) {
+  try {
+    const idToken = googleResponse.credential;
+    if (!idToken) return showMsg('login-msg', 'Google sign-in failed');
+
+    const btn = document.getElementById('login-submit');
+    btn.disabled = true; btn.textContent = 'Signing In...';
+
+    const res = await fetch(`${API_URL}/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      showMsg('login-msg', data.message || 'Google login failed');
+      btn.disabled = false; btn.textContent = 'Sign In →';
+      return;
+    }
+
+    saveAuth(data.token, data.user);
+    showMsg('login-msg', '✓ Login successful! Redirecting...', 'success');
+    setTimeout(() => { window.location.href = data.user.role === 'admin' ? '/admin' : '/'; }, 700);
+  } catch (err) {
+    console.error('Google sign-in error:', err);
+    showMsg('login-msg', 'Server not reachable. Check backend.');
+    const btn = document.getElementById('login-submit');
+    btn.disabled = false; btn.textContent = 'Sign In →';
+  }
+}
+
+function initGoogleSignIn() {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+  if (!clientId) return; // not configured
+  // Wait for global `google` to be available (script loaded in HTML)
+  const tryInit = () => {
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      window.google.accounts.id.initialize({ client_id: clientId, callback: handleGoogleCredential });
+      window.google.accounts.id.renderButton(document.getElementById('google-signin-btn'), { theme: 'outline', size: 'large', width: '100%' });
+      // Optionally prompt
+      // window.google.accounts.id.prompt();
+    } else {
+      setTimeout(tryInit, 300);
+    }
+  };
+  tryInit();
+}
+
+// Initialize Google sign-in if configured
+initGoogleSignIn();
+
 // ─── Register ───
 document.getElementById('register-form').addEventListener('submit', async (e) => {
   e.preventDefault();
