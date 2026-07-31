@@ -164,6 +164,19 @@ function initGoogleSignIn() {
 // Initialize Google sign-in if configured
 initGoogleSignIn();
 
+// Manual Google prompt button fallback
+const gmBtn = document.getElementById('google-manual-btn');
+if (gmBtn) {
+  gmBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      window.google.accounts.id.prompt();
+    } else {
+      showMsg('login-msg', 'Google Sign-In not configured or loading.');
+    }
+  });
+}
+
 // ─── Register ───
 document.getElementById('register-form').addEventListener('submit', async (e) => {
   e.preventDefault();
