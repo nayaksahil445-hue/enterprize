@@ -25,10 +25,11 @@ This guide explains how to deploy the Jaganath Enterprises furniture website to 
 ## 2. Frontend Deployment (Vercel)
 1. **Create Vercel Project**: Sign up on [Vercel](https://vercel.com) and import your GitHub repo.
 2. **Build Settings**:
-   - **Root Directory**: `client`
-   - **Framework Preset**: `Next.js`
+   - **Root Directory**: `.`
+   - **Framework Preset**: `Vite`
 3. **Environment Variables**:
-   - `NEXT_PUBLIC_API_URL`: The URL of your Render backend (e.g., `https://jaganath-api.onrender.com/api`).
+   - `VITE_API_URL`: The URL of your backend API, for example `https://your-render-backend.onrender.com/api`.
+   - If you prefer a different name, you can also use `VITE_PUBLIC_API_URL` or `VITE_APP_API_URL`.
 4. **Deploy**: Click "Deploy".
 
 ## 3. Post-Deployment Verification
