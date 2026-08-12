@@ -21,8 +21,9 @@ This guide explains how to deploy the Jaganath Enterprises furniture website to 
    - `SMTP_USER`: Your Gmail address.
    - `SMTP_PASS`: Your Gmail App Password (16 characters), not your normal Gmail password.
    - `FROM_EMAIL`: `"Jagannath Enterprises" <your_gmail_address@gmail.com>`
-      - `ALLOWED_ORIGINS`: (optional) Comma-separated list of allowed frontend origins for CORS. Example:
-         `https://enterprize-sand.vercel.app,https://admin.yourdomain.com`
+   - `ALLOWED_ORIGINS`: Comma-separated list of allowed frontend origins for CORS.
+      Example: `https://enterprize-sand.vercel.app,https://admin.yourdomain.com`
+      In production, this should be set so browser requests are accepted.
 
 ## 2. Frontend Deployment (Vercel)
 1. **Create Vercel Project**: Sign up on [Vercel](https://vercel.com) and import your GitHub repo.

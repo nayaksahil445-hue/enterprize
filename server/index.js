@@ -41,8 +41,18 @@ if (allowedOrigins.length > 0) {
     credentials: true
   }));
   console.log(`✅ CORS whitelist active — allowed origins: ${allowedOrigins.join(', ')}`);
+} else if (process.env.NODE_ENV === 'production') {
+  // In production, do not allow all origins by default.
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      return callback(new Error('CORS policy: ALLOWED_ORIGINS not configured'));
+    },
+    credentials: true
+  }));
+  console.error('❌ Production CORS blocked: ALLOWED_ORIGINS is required to allow browser origins');
 } else {
-  // No whitelist configured: allow all (original behavior)
+  // No whitelist configured: allow all for development/local setups.
   app.use(cors());
   console.log('⚠️  CORS: no ALLOWED_ORIGINS configured — allowing all origins (set ALLOWED_ORIGINS to restrict)');
 }
