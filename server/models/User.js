@@ -96,7 +96,7 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 userSchema.methods.generateToken = function() {
   return jwt.sign(
     { id: this._id, role: this.role },
-    process.env.JWT_SECRET || 'jagannath_secret_key_2026',
+    process.env.JWT_SECRET || 'jagannath_enterprises_jwt_secret_2026_production',
     { expiresIn: '30d' }
   );
 };

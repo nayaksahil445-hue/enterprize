@@ -14,7 +14,7 @@ export const protect = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'jagannath_secret_key_2026');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'jagannath_enterprises_jwt_secret_2026_production');
     req.user = await User.findById(decoded.id).select('-password');
     if (!req.user) {
       return res.status(401).json({ message: 'User not found' });
@@ -42,7 +42,7 @@ export const optionalAuth = async (req, res, next) => {
   }
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'jagannath_secret_key_2026');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'jagannath_enterprises_jwt_secret_2026_production');
       req.user = await User.findById(decoded.id).select('-password');
     } catch { /* ignore */ }
   }

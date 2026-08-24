@@ -6,20 +6,36 @@ import { OAuth2Client } from 'google-auth-library';
 
 const router = express.Router();
 
-const googleClient = process.env.GOOGLE_CLIENT_ID ? new OAuth2Client(process.env.GOOGLE_CLIENT_ID) : null;
+const getGoogleClient = () => new OAuth2Client(process.env.GOOGLE_CLIENT_ID || undefined);
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
 
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
     // Check if user exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists with this email' });
     }
 
-    const user = await User.create({ name, email, password, phone });
+    const user = await User.create({
+      name: name.trim(),
+      email: normalizedEmail,
+      password,
+      phone: phone ? phone.trim() : ''
+    });
+
     const token = user.generateToken();
 
     res.status(201).json({
@@ -40,7 +56,7 @@ router.post('/register', async (req, res) => {
     if (err.code === 11000) {
       return res.status(400).json({ message: 'Email already registered' });
     }
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: err.message || 'Registration failed' });
   }
 });
 
@@ -49,7 +65,13 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email }).select('+password');
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const user = await User.findOne({ email: normalizedEmail }).select('+password');
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
@@ -76,7 +98,7 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message || 'Login failed due to server error' });
   }
 });
 
@@ -233,11 +255,16 @@ router.post('/google', async (req, res) => {
   try {
     const { idToken } = req.body;
     if (!idToken) return res.status(400).json({ message: 'ID token is required' });
-    if (!googleClient) return res.status(500).json({ message: 'Google OAuth not configured on server' });
 
-    const ticket = await googleClient.verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID });
+    const client = getGoogleClient();
+    const verifyParams = { idToken };
+    if (process.env.GOOGLE_CLIENT_ID) {
+      verifyParams.audience = process.env.GOOGLE_CLIENT_ID;
+    }
+
+    const ticket = await client.verifyIdToken(verifyParams);
     const payload = ticket.getPayload();
-    const email = (payload.email || '').toLowerCase();
+    const email = (payload.email || '').trim().toLowerCase();
     if (!email) return res.status(400).json({ message: 'Google account email not available' });
 
     let user = await User.findOne({ email });
