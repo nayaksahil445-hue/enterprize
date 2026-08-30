@@ -105,6 +105,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       window.location.href = data.user.role === 'admin' ? '/admin' : '/';
     }, 800);
   } catch (err) {
+    console.error('[AUTH LOGIN ERROR]', err);
     showMsg('login-msg', 'Server not reachable. Check if backend is running.');
     btn.disabled = false;
     btn.textContent = 'Sign In →';
@@ -157,6 +158,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
       window.location.href = '/';
     }, 800);
   } catch (err) {
+    console.error('[AUTH REGISTER ERROR]', err);
     showMsg('register-msg', 'Server not reachable. Check if backend is running.');
     btn.disabled = false;
     btn.textContent = 'Create Account →';
@@ -202,6 +204,7 @@ async function handleSendOtp(email) {
 
     return true;
   } catch (err) {
+    console.error('[AUTH FORGOT PASSWORD ERROR]', err);
     showMsg('forgot-msg', 'Server not reachable. Check if backend is running.');
     btn.disabled = false;
     btn.textContent = 'Send OTP Code →';

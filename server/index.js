@@ -53,8 +53,8 @@ if (allowedOrigins.length > 0) {
   console.error('❌ Production CORS blocked: ALLOWED_ORIGINS is required to allow browser origins');
 } else {
   // No whitelist configured: allow all for development/local setups.
-  app.use(cors());
-  console.log('⚠️  CORS: no ALLOWED_ORIGINS configured — allowing all origins (set ALLOWED_ORIGINS to restrict)');
+  app.use(cors({ origin: true, credentials: true }));
+  console.log('⚠️  CORS: no ALLOWED_ORIGINS configured — allowing all origins with credentials (set ALLOWED_ORIGINS to restrict)');
 }
 
 app.use(express.json({ limit: '10mb' }));
