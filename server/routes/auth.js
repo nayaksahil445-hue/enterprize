@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/User.js';
+import Product from '../models/Product.js';
 import { protect } from '../middleware/auth.js';
 import { sendOtpEmail } from '../utils/sendEmail.js';
 import { OAuth2Client } from 'google-auth-library';
@@ -199,7 +200,8 @@ router.post('/forgot-password', async (req, res) => {
       return res.status(400).json({ message: 'Email address is required' });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(404).json({ message: 'No account found with this email address' });
     }
@@ -250,7 +252,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// POST /api/auth/google  (Sign-in with Google ID token)
+// POST /api/auth/google (Sign-in with Google ID token)
 router.post('/google', async (req, res) => {
   try {
     const { idToken } = req.body;
@@ -308,7 +310,8 @@ router.post('/reset-password', async (req, res) => {
       return res.status(400).json({ message: 'Password must be at least 6 characters' });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() })
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail })
       .select('+resetPasswordOtp +resetPasswordOtpExpires');
 
     if (!user) {

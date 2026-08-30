@@ -261,15 +261,6 @@
       <input type="password" name="password" placeholder="Enter your password" required id="login-password" />
     </div>
     <button type="submit" class="auth-submit" id="login-submit">Sign In →</button>
-    <div style="margin-top:0.75rem;">
-      <div id="google-signin-btn"></div>
-    </div>
-    <div style="margin-top:0.6rem; text-align:center;">
-      <div class="auth-divider" style="margin:0.6rem 0;">or</div>
-      <button id="google-manual-btn" style="width:100%; background:#fff; color:#000; border-radius:10px; padding:0.6rem; font-weight:700; display:flex;align-items:center;justify-content:center;gap:0.6rem;">
-        <img src="/images/google-icon.svg" alt="Google" style="width:18px;height:18px;"> Sign in with Google
-      </button>
-    </div>
     <div id="login-msg" class="auth-msg" style="display:none;"></div>
     <div class="auth-divider">Demo Accounts</div>
     <div class="demo-info">
@@ -357,7 +348,5 @@
 </main>
 
 <script type="module" src="/src/auth.js"></script>
-<!-- Google Identity Services: loaded by client when GOOGLE client id is present -->
-<script async defer src="https://accounts.google.com/gsi/client"></script>
 </body>
 </html>
