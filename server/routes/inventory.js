@@ -1,6 +1,7 @@
 import express from 'express';
 import Product from '../models/Product.js';
 import StockMovement from '../models/StockMovement.js';
+import User from '../models/User.js';
 import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = express.Router();

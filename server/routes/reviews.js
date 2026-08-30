@@ -1,6 +1,7 @@
 import express from 'express';
 import Review from '../models/Review.js';
 import Order from '../models/Order.js';
+import User from '../models/User.js';
 import { protect } from '../middleware/auth.js';
 
 const router = express.Router();

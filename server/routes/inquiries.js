@@ -1,5 +1,6 @@
 import express from 'express';
 import Inquiry from '../models/Inquiry.js';
+import Product from '../models/Product.js';
 import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = express.Router();

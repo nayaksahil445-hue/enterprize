@@ -2,6 +2,7 @@ import express from 'express';
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
 import Cart from '../models/Cart.js';
+import User from '../models/User.js';
 import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -23,13 +24,17 @@ router.post('/', protect, async (req, res) => {
     for (const item of items) {
       const product = await Product.findById(item.product);
       if (!product) {
-        return res.status(400).json({ message: `Product ${item.productName} not found` });
+        return res.status(400).json({ message: `Product ${item.productName || item.product} not found` });
       }
       if (product.stock < item.qty) {
         return res.status(400).json({
           message: `${product.name} has only ${product.stock} units in stock`
         });
       }
+      if (!item.productName) item.productName = product.name;
+      if (!item.price) item.price = product.price;
+      if (!item.category) item.category = product.category;
+      if (!item.image) item.image = product.image;
     }
 
     // Create order
@@ -75,8 +80,8 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
-// GET /api/orders/my — User's orders
-router.get('/my', protect, async (req, res) => {
+// GET /api/orders/my & /api/orders/my-orders — User's orders
+const getMyOrdersHandler = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id })
       .sort({ createdAt: -1 })
@@ -85,7 +90,10 @@ router.get('/my', protect, async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-});
+};
+
+router.get('/my', protect, getMyOrdersHandler);
+router.get('/my-orders', protect, getMyOrdersHandler);
 
 // GET /api/orders/:id — Order detail
 router.get('/:id', protect, async (req, res) => {
@@ -126,10 +134,13 @@ router.get('/', protect, adminOnly, async (req, res) => {
   }
 });
 
-// PATCH /api/orders/:id/status — Admin: update status
-router.patch('/:id/status', protect, adminOnly, async (req, res) => {
+// PATCH / PUT /api/orders/:id/status — Admin: update status
+const updateOrderStatusHandler = async (req, res) => {
   try {
-    const { status, message } = req.body;
+    const status = req.body.status || req.body.orderStatus;
+    const message = req.body.message;
+    if (!status) return res.status(400).json({ message: 'Order status is required' });
+
     const order = await Order.findById(req.params.id);
     if (!order) return res.status(404).json({ message: 'Order not found' });
 
@@ -163,7 +174,10 @@ router.patch('/:id/status', protect, adminOnly, async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
-});
+};
+
+router.patch('/:id/status', protect, adminOnly, updateOrderStatusHandler);
+router.put('/:id/status', protect, adminOnly, updateOrderStatusHandler);
 
 // PATCH /api/orders/:id/cancel — Customer: cancel order with feedback
 router.patch('/:id/cancel', protect, async (req, res) => {
