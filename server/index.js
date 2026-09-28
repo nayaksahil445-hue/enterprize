@@ -16,7 +16,7 @@ import inventoryRoutes from './routes/inventory.js';
 import inquiryRoutes from './routes/inquiries.js';
 import debugRoutes from './routes/debug.js';
 
-dotenv.config();
+dotenv.config(); // Trigger restart
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -35,26 +35,16 @@ if (allowedOrigins.length > 0) {
     origin: (origin, callback) => {
       // allow non-browser requests (no Origin) like curl/server-to-server
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+      if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) return callback(null, true);
       return callback(new Error('CORS policy: This origin is not allowed'));
     },
     credentials: true
   }));
   console.log(`✅ CORS whitelist active — allowed origins: ${allowedOrigins.join(', ')}`);
-} else if (process.env.NODE_ENV === 'production') {
-  // In production, do not allow all origins by default.
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      return callback(new Error('CORS policy: ALLOWED_ORIGINS not configured'));
-    },
-    credentials: true
-  }));
-  console.error('❌ Production CORS blocked: ALLOWED_ORIGINS is required to allow browser origins');
 } else {
-  // No whitelist configured: allow all for development/local setups.
+  // Allow all browser origins gracefully if ALLOWED_ORIGINS is not set
   app.use(cors({ origin: true, credentials: true }));
-  console.log('⚠️  CORS: no ALLOWED_ORIGINS configured — allowing all origins with credentials (set ALLOWED_ORIGINS to restrict)');
+  console.log('⚠️  CORS: ALLOWED_ORIGINS not set — allowing all origins with credentials');
 }
 
 app.use(express.json({ limit: '10mb' }));
@@ -90,6 +80,7 @@ app.get('/api/health', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Server Error:', err);
+  import('fs').then(fs => fs.appendFileSync('server_error.log', err.stack + '\n'));
   res.status(500).json({
     message: 'Internal server error',
     error: process.env.NODE_ENV === 'development' ? err.message : undefined
@@ -97,6 +88,9 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
+  const publicApiUrl = process.env.RENDER_EXTERNAL_URL
+    ? `${process.env.RENDER_EXTERNAL_URL}/api`
+    : `http://localhost:${PORT}/api`;
   console.log(`🚀 Server is running on port ${PORT}`);
-  console.log(`📡 API: http://localhost:${PORT}/api`);
+  console.log(`📡 API: ${publicApiUrl}`);
 });
