@@ -77,7 +77,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('login-submit');
   const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
+  const password = document.getElementById('login-password').value.trim();
 
   btn.disabled = true;
   btn.textContent = 'Signing In...';
@@ -237,8 +237,8 @@ document.getElementById('reset-form')?.addEventListener('submit', async (e) => {
   const btn = document.getElementById('reset-submit');
   const email = document.getElementById('reset-email').value.trim();
   const otp = document.getElementById('reset-otp').value.trim();
-  const newPassword = document.getElementById('reset-new-password').value;
-  const confirmNewPassword = document.getElementById('reset-confirm-password').value;
+  const newPassword = document.getElementById('reset-new-password').value.trim();
+  const confirmNewPassword = document.getElementById('reset-confirm-password').value.trim();
 
   if (newPassword !== confirmNewPassword) {
     showMsg('reset-msg', 'Passwords do not match');
