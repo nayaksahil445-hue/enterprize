@@ -1,5 +1,5 @@
 import './pwa-setup.js';
-import { apiRequest, formatPrice, formatDate, formatDateShort, showToast, isAdmin, logout, getProductAltText } from './utils.js';
+import { API_URL, apiRequest, formatPrice, formatDate, formatDateShort, showToast, isAdmin, logout, getProductAltText } from './utils.js';
 
 /* ============================================================
    JAGANNATH ENTERPRISES — ADMIN CORE LOGIC
@@ -234,19 +234,43 @@ productForm?.addEventListener('submit', async (e) => {
     if (k && v) specifications[k.trim()] = v.trim();
   });
 
-  const body = {
-    name: document.getElementById('af-name').value,
-    category: document.getElementById('af-category').value,
-    price: Number(document.getElementById('af-price').value),
-    originalPrice: Number(document.getElementById('af-original-price').value) || undefined,
-    stock: Number(document.getElementById('af-stock').value),
-    image: document.getElementById('af-image').value,
-    description: document.getElementById('af-desc').value,
-    specifications
-  };
-
   try {
     setLoading(true);
+
+    let imageUrl = document.getElementById('af-image').value;
+    const fileInput = document.getElementById('af-image-file');
+    
+    // Process image upload if a file is selected
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      const formData = new FormData();
+      formData.append('image', fileInput.files[0]);
+      
+      const token = localStorage.getItem('je_token');
+      const uploadRes = await fetch(`${API_URL}/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+      
+      const uploadData = await uploadRes.json();
+      if (!uploadRes.ok) throw new Error(uploadData.message || 'Image upload failed');
+      
+      imageUrl = uploadData.imageUrl;
+    }
+
+    const body = {
+      name: document.getElementById('af-name').value,
+      category: document.getElementById('af-category').value,
+      price: Number(document.getElementById('af-price').value),
+      originalPrice: Number(document.getElementById('af-original-price').value) || undefined,
+      stock: Number(document.getElementById('af-stock').value),
+      image: imageUrl,
+      description: document.getElementById('af-desc').value,
+      specifications
+    };
+
     const url = id ? `/products/${id}` : '/products';
     const method = id ? 'PUT' : 'POST';
     
@@ -270,6 +294,8 @@ window._editProduct = (id) => {
   document.getElementById('af-original-price').value = p.originalPrice || '';
   document.getElementById('af-stock').value = p.stock;
   document.getElementById('af-image').value = p.image || '';
+  const fileInput = document.getElementById('af-image-file');
+  if(fileInput) fileInput.value = ''; // Reset file input
   document.getElementById('af-desc').value = p.description || '';
   
   // Specs back to text

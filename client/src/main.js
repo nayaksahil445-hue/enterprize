@@ -530,7 +530,7 @@ document.getElementById('contact-form')?.addEventListener('submit', async (e) =>
   btn.disabled = true;
 
   try {
-    const res = await fetch(`${API_URL}/contact`, {
+    const res = await fetch(`${API_URL}/inquiries`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),

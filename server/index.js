@@ -15,6 +15,7 @@ import adminRoutes from './routes/admin.js';
 import inventoryRoutes from './routes/inventory.js';
 import inquiryRoutes from './routes/inquiries.js';
 import debugRoutes from './routes/debug.js';
+import uploadRoutes from './routes/upload.js';
 
 dotenv.config(); // Trigger restart
 
@@ -35,7 +36,9 @@ if (allowedOrigins.length > 0) {
     origin: (origin, callback) => {
       // allow non-browser requests (no Origin) like curl/server-to-server
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) return callback(null, true);
+      const cleanOrigin = origin.replace(/\/$/, '');
+      if (allowedOrigins.includes(cleanOrigin) || allowedOrigins.includes('*')) return callback(null, true);
+      console.error('CORS blocked origin:', origin);
       return callback(new Error('CORS policy: This origin is not allowed'));
     },
     credentials: true
@@ -67,6 +70,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/debug', debugRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

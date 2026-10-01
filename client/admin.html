@@ -286,7 +286,14 @@
           <div class="af-group"><label>Price (₹)</label><input type="number" id="af-price" required></div>
           <div class="af-group"><label>Original Price (₹)</label><input type="number" id="af-original-price"></div>
           <div class="af-group"><label>Stock Quantity</label><input type="number" id="af-stock" required></div>
-          <div class="af-group"><label>Image URL</label><input type="text" id="af-image" placeholder="/images/product.png"></div>
+          <div class="af-group">
+            <label>Image Upload</label>
+            <input type="file" id="af-image-file" accept="image/*" style="padding:0.6rem 1.25rem;">
+          </div>
+          <div class="af-group">
+            <label>Or Image URL</label>
+            <input type="text" id="af-image" placeholder="/images/product.png">
+          </div>
           <div class="af-group full"><label>Description</label><textarea id="af-desc" rows="3"></textarea></div>
           <div class="af-group full"><label>Specifications (Key: Value, one per line)</label><textarea id="af-specs" rows="4" placeholder="Material: Steel&#10;Color: Iron Grey"></textarea></div>
           <div style="grid-column:1/-1; display:flex; gap:1rem; margin-top:1rem;">
