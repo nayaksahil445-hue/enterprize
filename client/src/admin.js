@@ -5,6 +5,35 @@ import { API_URL, apiRequest, formatPrice, formatDate, formatDateShort, showToas
    JAGANNATH ENTERPRISES — ADMIN CORE LOGIC
    ============================================================ */
 
+// Convert and compress image to Base64 to save directly in DB (works on deployment)
+const compressImageToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800; // Resize to max 800px to save DB space
+        let width = img.width;
+        let height = img.height;
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/webp', 0.8)); // Convert to optimized WEBP
+      };
+      img.onerror = error => reject(error);
+    };
+    reader.onerror = error => reject(error);
+  });
+};
+
 // Redirect if not admin
 if (!isAdmin()) {
   showToast('Access Denied. Admins only.', 'error');
@@ -240,24 +269,13 @@ productForm?.addEventListener('submit', async (e) => {
     let imageUrl = document.getElementById('af-image').value;
     const fileInput = document.getElementById('af-image-file');
     
-    // Process image upload if a file is selected
+    // Process image upload if a file is selected (Compress to Base64)
     if (fileInput && fileInput.files && fileInput.files[0]) {
-      const formData = new FormData();
-      formData.append('image', fileInput.files[0]);
-      
-      const token = localStorage.getItem('je_token');
-      const uploadRes = await fetch(`${API_URL}/upload`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
-      
-      const uploadData = await uploadRes.json();
-      if (!uploadRes.ok) throw new Error(uploadData.message || 'Image upload failed');
-      
-      imageUrl = uploadData.imageUrl;
+      try {
+        imageUrl = await compressImageToBase64(fileInput.files[0]);
+      } catch (e) {
+        throw new Error('Failed to process image. Please try another image.');
+      }
     }
 
     const body = {

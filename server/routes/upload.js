@@ -10,8 +10,8 @@ const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
-// Define the target directory where images should be saved: client/public/images
-const targetDir = path.join(__dirname, '../../client/public/images');
+// Define the target directory where images should be saved: server/uploads
+const targetDir = path.join(__dirname, '../uploads');
 
 // Ensure directory exists
 if (!fs.existsSync(targetDir)) {
@@ -46,10 +46,10 @@ router.post('/', protect, adminOnly, upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded' });
   }
-  // Return the public URL path for the frontend
+  // Return the public URL path for the frontend (proxied via /api)
   res.json({
     message: 'Image uploaded successfully',
-    imageUrl: `/images/${req.file.filename}`
+    imageUrl: `/api/uploads/${req.file.filename}`
   });
 });
 

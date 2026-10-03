@@ -16,6 +16,11 @@ import inventoryRoutes from './routes/inventory.js';
 import inquiryRoutes from './routes/inquiries.js';
 import debugRoutes from './routes/debug.js';
 import uploadRoutes from './routes/upload.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config(); // Trigger restart
 
@@ -71,6 +76,9 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/debug', debugRoutes);
 app.use('/api/upload', uploadRoutes);
+
+// Serve uploaded images statically
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Health check
 app.get('/api/health', (req, res) => {
