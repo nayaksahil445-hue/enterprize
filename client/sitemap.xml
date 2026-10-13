@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <!-- Homepage -->
   <url>
     <loc>https://enterprize-sand.vercel.app/</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://enterprize-sand.vercel.app/images/og-preview.jpg</image:loc>
+      <image:title>Jagannath Enterprises — Steel Almirah &amp; Industrial Steel Cupboard Manufacturer</image:title>
+      <image:caption>Premier industrial steel cupboard &amp; office almirah manufacturer in New Delhi and Odisha</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://enterprize-sand.vercel.app/images/cupboard.webp</image:loc>
+      <image:title>Steel Almirah with Locker (2 Door / 3 Door)</image:title>
+      <image:caption>Heavy-duty industrial steel almirah with locker, 2 door and 3 door</image:caption>
+    </image:image>
     <video:video>
       <video:thumbnail_loc>https://enterprize-sand.vercel.app/images/og-preview.jpg</video:thumbnail_loc>
       <video:title>Jagannath Enterprises — Industrial Steel Cupboard Factory Tour</video:title>
@@ -15,33 +27,92 @@
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
   </url>
-  <url>
-    <loc>https://enterprize-sand.vercel.app/#products</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://enterprize-sand.vercel.app/#about</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://enterprize-sand.vercel.app/#contact</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+
+  <!-- Product Catalog -->
   <url>
     <loc>https://enterprize-sand.vercel.app/product</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- Individual Products with Image Search Sitemaps -->
+  <url>
+    <loc>https://enterprize-sand.vercel.app/product?id=p1</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://enterprize-sand.vercel.app/images/cupboard.webp</image:loc>
+      <image:title>Steel Almirah with Locker (2 Door / 3 Door) — Jagannath Enterprises</image:title>
+      <image:caption>Heavy-duty industrial steel almirah with locker at wholesale factory price</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://enterprize-sand.vercel.app/product?id=p2</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://enterprize-sand.vercel.app/images/dressing_table.webp</image:loc>
+      <image:title>Executive Loft Dressing Table — Jagannath Enterprises</image:title>
+      <image:caption>Premium steel dressing table with integrated LED mirror</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://enterprize-sand.vercel.app/product?id=p3</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://enterprize-sand.vercel.app/images/cabinet.webp</image:loc>
+      <image:title>Registry Office Steel Almirah Cabinet — Jagannath Enterprises</image:title>
+      <image:caption>Secure fire-resistant office almirah cabinet with heavy key lock</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://enterprize-sand.vercel.app/product?id=p4</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://enterprize-sand.vercel.app/images/shelves.webp</image:loc>
+      <image:title>Industrial Steel Shelf Unit — Jagannath Enterprises</image:title>
+      <image:caption>Multi-tier industrial steel cupboard shelving unit</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://enterprize-sand.vercel.app/product?id=p5</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://enterprize-sand.vercel.app/images/chest.webp</image:loc>
+      <image:title>Brass Tag 4 Door Steel Almirah Chest — Jagannath Enterprises</image:title>
+      <image:caption>Vintage style 4 door steel almirah chest of drawers</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://enterprize-sand.vercel.app/product?id=p6</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://enterprize-sand.vercel.app/images/cabinet.webp</image:loc>
+      <image:title>Modular Steel Almirah &amp; Cabinet Set — Jagannath Enterprises</image:title>
+      <image:caption>Enterprise-grade modular steel almirah and cabinet system</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Customer Portal / Account -->
   <url>
     <loc>https://enterprize-sand.vercel.app/auth</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

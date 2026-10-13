@@ -593,6 +593,29 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 /* ===============================================================
+   FAQ ACCORDION
+   ================================================================ */
+function initFaq() {
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const questionBtn = item.querySelector('.faq-question');
+    if (!questionBtn) return;
+    questionBtn.addEventListener('click', () => {
+      const isAlreadyActive = item.classList.contains('active');
+      // Collapse any currently open items
+      document.querySelectorAll('.faq-item.active').forEach(openItem => {
+        if (openItem !== item) {
+          openItem.classList.remove('active');
+          openItem.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+      // Toggle current
+      item.classList.toggle('active', !isAlreadyActive);
+      questionBtn.setAttribute('aria-expanded', (!isAlreadyActive).toString());
+    });
+  });
+}
+
+/* ===============================================================
    INIT
    ================================================================ */
 initReveal();
@@ -600,3 +623,4 @@ fetchProducts();
 loadCartData();
 updateNavbarAuth();
 loadRecommendations();
+initFaq();

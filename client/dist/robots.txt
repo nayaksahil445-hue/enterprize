@@ -1,11 +1,56 @@
+# Robots.txt for Jagannath Enterprises
+# Website: https://enterprize-sand.vercel.app
+
 User-agent: *
 Allow: /
-
 Disallow: /admin.html
+Disallow: /admin
 Disallow: /dashboard.html
+Disallow: /dashboard
+Disallow: /checkout.html
+Disallow: /checkout
+Disallow: /tracking.html
+Disallow: /tracking
+Disallow: /api/
+
+# Googlebot specific rules
+User-agent: Googlebot
+Allow: /
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /checkout
 Disallow: /tracking
+Disallow: /api/
+
+# Google Image search crawler
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /public/images/
+Allow: /logo*.png
+Allow: /icon*.png
+Allow: /favicon.*
+
+# Bing / Yahoo search crawlers
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /checkout
+Disallow: /tracking
+Disallow: /api/
+
+User-agent: Slurp
+Allow: /
+
+# Privacy & International crawlers
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
 
 Sitemap: https://enterprize-sand.vercel.app/sitemap.xml
+Host: enterprize-sand.vercel.app
