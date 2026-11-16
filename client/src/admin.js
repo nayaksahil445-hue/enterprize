@@ -266,17 +266,25 @@ productForm?.addEventListener('submit', async (e) => {
   try {
     setLoading(true);
 
-    let imageUrl = document.getElementById('af-image').value;
     const fileInput = document.getElementById('af-image-file');
-    
-    // Process image upload if a file is selected (Compress to Base64)
+    const urlInput = document.getElementById('af-image').value.trim();
+    // Current saved image (from hidden field, set during _editProduct)
+    const existingImage = document.getElementById('af-image-existing')?.value || '';
+
+    let imageUrl = existingImage; // default: keep old image
+
     if (fileInput && fileInput.files && fileInput.files[0]) {
+      // New file selected → compress & use as Base64
       try {
         imageUrl = await compressImageToBase64(fileInput.files[0]);
       } catch (e) {
         throw new Error('Failed to process image. Please try another image.');
       }
+    } else if (urlInput) {
+      // URL manually typed → use that
+      imageUrl = urlInput;
     }
+    // else: neither file nor url → keep existingImage (no change)
 
     const body = {
       name: document.getElementById('af-name').value,
@@ -311,9 +319,26 @@ window._editProduct = (id) => {
   document.getElementById('af-price').value = p.price;
   document.getElementById('af-original-price').value = p.originalPrice || '';
   document.getElementById('af-stock').value = p.stock;
-  document.getElementById('af-image').value = p.image || '';
+  
+  // Store existing image in hidden field — do NOT put Base64 in URL field (too large)
+  const existingField = document.getElementById('af-image-existing');
+  if (existingField) existingField.value = p.image || '';
+  
+  // Show current image preview (small thumbnail)
+  const previewEl = document.getElementById('af-image-preview');
+  if (previewEl) {
+    if (p.image) {
+      previewEl.src = p.image;
+      previewEl.style.display = 'block';
+    } else {
+      previewEl.style.display = 'none';
+    }
+  }
+  
+  // Clear file input and URL field for fresh edit
   const fileInput = document.getElementById('af-image-file');
-  if(fileInput) fileInput.value = ''; // Reset file input
+  if (fileInput) fileInput.value = '';
+  document.getElementById('af-image').value = ''; // clear URL field — existing image kept via hidden field
   document.getElementById('af-desc').value = p.description || '';
   
   // Specs back to text

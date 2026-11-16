@@ -2,6 +2,7 @@ import express from 'express';
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
 import User from '../models/User.js';
+import Inquiry from '../models/Inquiry.js';
 import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -192,30 +193,35 @@ router.get('/inventory-alerts', protect, adminOnly, async (req, res) => {
   }
 });
 
-// Contact model (kept from original)
-import mongoose from 'mongoose';
-const contactSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  message: String,
-  date: { type: Date, default: Date.now }
-});
-const Contact = mongoose.model('Contact', contactSchema);
-
-// GET /api/admin/enquiries
+// GET /api/admin/enquiries — reads from Inquiry model (same collection frontend posts to)
 router.get('/enquiries', protect, adminOnly, async (req, res) => {
   try {
-    const contacts = await Contact.find().sort({ date: -1 });
-    res.json(contacts);
+    const inquiries = await Inquiry.find()
+      .sort({ createdAt: -1 })
+      .populate('product', 'name price');
+    // Map to shape admin.js expects: { date, name, email, message }
+    const result = inquiries.map(e => ({
+      _id: e._id,
+      date: e.createdAt,
+      name: e.name,
+      email: e.email,
+      company: e.company || '',
+      message: e.message,
+      status: e.status,
+      type: e.type,
+      adminNotes: e.adminNotes
+    }));
+    res.json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// POST /api/contact — public
+// POST /api/admin/contact — public (legacy, now saves to Inquiry model)
 router.post('/contact', async (req, res) => {
   try {
-    const contact = await Contact.create(req.body);
+    const { name, email, message } = req.body;
+    const inquiry = await Inquiry.create({ name, email, message, type: 'general' });
     res.status(201).json({ message: 'Message sent successfully' });
   } catch (err) {
     res.status(400).json({ message: err.message });
